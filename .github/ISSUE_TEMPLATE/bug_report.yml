@@ -1,0 +1,50 @@
+name: Bug Report
+description: Reporting a bug and the steps to reproduce it
+labels: ["bug"]
+projects: ["BxptisteM/Projects/Whanos"]
+
+body:
+
+  - type: markdown
+    attributes:
+      value: |
+        Please fill out each of the following sections to provide as much detail as possible
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the problem
+      placeholder: When I do XXX, XXX happens
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Do X
+        2. Do XX
+        3. Do XXX
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What is the expected result?
+      placeholder: I am supposed to get X
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Attach your recordings and/or screenshots here (even if you provide a recording, please detail each step)
+
+  - type: dropdown
+    id: assign
+    attributes:
+      label: "What is the priority?"
+      options:
+        - "1"
+        - "2"
+        - "3"

@@ -32,7 +32,7 @@ def authenticate_gcloud():
             print(colored(line.strip(), "blue"))
             print(colored("Then enter the given code:", "cyan"))
 
-    process.wait()  # Attend la fin du processus
+    process.wait()
 
     if process.returncode != 0:
         raise Exception(colored("Failed to authenticate with gcloud. Please check your setup.", "red"))

@@ -1,6 +1,13 @@
 name: Whanos pipeline
 
-on: [push, pull_request]
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
 
 env:
   EPITECH_REPOSITORY_LINK: "git@github.com:EpitechPromo2027/B-DOP-500-NAN-5-1-whanos-dragos.suceveanu.git"

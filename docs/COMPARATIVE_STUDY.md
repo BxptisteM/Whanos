@@ -1,5 +1,5 @@
 
-# Study on Technological Choices for a DevOps Project
+# Study on Technological Choices for the Whanos Project
 
 ## Terraform
 

@@ -33,33 +33,46 @@ jobs:
       run: |
         flake8 .
 
-  deploy-documentation:
-    runs-on: ubuntu-latest
-    needs:
-      - python-checks
-    steps:
-      - uses: actions/checkout@v3
+deploy-documentation:
+  runs-on: ubuntu-latest
+  needs:
+    - python-checks
+  steps:
+    - uses: actions/checkout@v3
 
-      - name: Configure Wiki access
-        env:
-          WIKI_URL: "https://${{ secrets.GH_TOKEN }}@github.com/BxptisteM/Whanos.wiki.git"
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git clone "$WIKI_URL" wiki
+    - name: Configure Wiki access
+      env:
+        WIKI_URL: "https://${{ secrets.GH_TOKEN }}@github.com/BxptisteM/Whanos.wiki.git"
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git clone "$WIKI_URL" wiki
 
-      - name: Deploy documentation to Wiki
-        run: |
-          rm -rf wiki/*
-          cp -r docs/* wiki/
-          cp README.md wiki/Home.md
+    - name: Deploy documentation to Wiki
+      run: |
+        rm -rf wiki/*
+        cp -r docs/* wiki/
+        cp README.md wiki/Home.md
 
-      - name: Push changes to Wiki
-        run: |
-          cd wiki
-          git add .
-          git commit -m "Update Wiki documentation"
-          git push
+    - name: Check for changes
+      id: changes
+      run: |
+        cd wiki
+        git add .
+        if git diff-index --quiet HEAD; then
+          echo "No changes to commit"
+          echo "skip=true" >> $GITHUB_ENV
+        else
+          echo "Changes detected"
+          echo "skip=false" >> $GITHUB_ENV
+        fi
+
+    - name: Push changes to Wiki
+      if: env.skip == 'false'
+      run: |
+        cd wiki
+        git commit -m "Update Wiki documentation"
+        git push
 
   mirroring:
     runs-on: ubuntu-latest

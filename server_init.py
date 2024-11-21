@@ -17,6 +17,7 @@ HARD_CODED_VALUES = {
     "disk_size": 10
 }
 
+
 def authenticate_gcloud():
     print(colored("Authenticating with Google Cloud...", "yellow"))
     process = subprocess.Popen(
@@ -37,6 +38,7 @@ def authenticate_gcloud():
     if process.returncode != 0:
         raise Exception(colored("Failed to authenticate with gcloud. Please check your setup.", "red"))
 
+
 def configure_gcloud_project(project_id):
     print(colored(f"Configuring GCP project: {project_id}...", "yellow"))
     process = subprocess.run(
@@ -50,6 +52,7 @@ def configure_gcloud_project(project_id):
         raise Exception(colored(f"Failed to set GCP project to {project_id}.", "red"))
 
     print(colored(f"Project configured successfully: {project_id}", "green"))
+
 
 def get_user_variables():
     ssh_key_path = os.getenv("SSH_PUBLIC_KEY_PATH")
@@ -69,6 +72,7 @@ def get_user_variables():
         "ssh_keys": f"{ssh_username}:{ssh_public_key}"
     }
 
+
 def generate_terraform_tfvars(project_id, user_vars):
     env = Environment(loader=FileSystemLoader("terraform/template"))
     template = env.get_template("terraform.tfvars.j2")
@@ -85,6 +89,7 @@ def generate_terraform_tfvars(project_id, user_vars):
 
     print(colored(f"Terraform configuration file generated: {tfvars_path}", "green"))
 
+
 def run_terraform():
     terraform_dir = Path("terraform")
 
@@ -92,8 +97,8 @@ def run_terraform():
     subprocess.run(["terraform", "init"], cwd=terraform_dir, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
 
     print(colored("Applying Terraform configuration...", "yellow"))
-    process = subprocess.run(["terraform", "apply", "-auto-approve"], cwd=terraform_dir,
-                              stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    process = subprocess.run(["terraform", "apply", "-auto-approve"], cwd=terraform_dir, stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE, text=True)
 
     if process.returncode != 0:
         raise Exception(colored(f"Terraform apply failed:\n{process.stderr}", "red"))
@@ -114,6 +119,7 @@ def run_terraform():
     vm_ip = output_process.stdout.strip().replace('"', '')
     return vm_ip
 
+
 if __name__ == "__main__":
     try:
         print(colored("Welcome to the GCP VM Terraform setup script!", "cyan"))
@@ -124,8 +130,8 @@ if __name__ == "__main__":
         generate_terraform_tfvars(project_id, user_vars)
         vm_ip = run_terraform()
         ssh_username = os.getenv("SSH_USERNAME")
-        print(colored(f"\nYou successfully created your VM on GCP!", "green"))
-        print(colored(f"You can access it via SSH using the following command:", "cyan"))
+        print(colored("\nYou successfully created your VM on GCP!", "green"))
+        print(colored("You can access it via SSH using the following command:", "cyan"))
         print(colored(f"ssh {ssh_username}@{vm_ip}", "blue"))
     except Exception as e:
         print(colored(f"Error: {e}", "red"))

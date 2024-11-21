@@ -1,7 +1,7 @@
 
-# Contributing to EpiTrello
+# Contributing to Whanos
 
-Thank you for your interest in contributing to EpiTrello! Please follow the guidelines below to ensure smooth collaboration.
+Thank you for your interest in contributing to Whanos! Please follow the guidelines below to ensure smooth collaboration.
 
 ---
 

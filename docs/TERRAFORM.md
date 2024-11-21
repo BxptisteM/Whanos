@@ -71,37 +71,12 @@ The `main.tf` file defines the Google Cloud resources to be provisioned.
 
 ## Python Automation Script
 
-The Python script automates several steps in the Terraform workflow:
+The **server_init** Python script automates several steps in the Terraform workflow:
 1. Authenticates the user with GCP.
 2. Configures the GCP project based on user input.
 3. Generates the `terraform.tfvars` file using the Jinja2 template.
 4. Executes Terraform commands (`init` and `apply`) to deploy the infrastructure.
 5. Retrieves the external IP of the VM post-deployment.
-
-### Script Highlights
-
-- **Authentication with GCP:**
-  ```python
-  def authenticate_gcloud():
-      subprocess.Popen(["gcloud", "auth", "login", "--no-launch-browser"], ...)
-  ```
-
-- **Dynamic Variable Generation:**
-  ```python
-  def generate_terraform_tfvars(project_id, user_vars):
-      env = Environment(loader=FileSystemLoader("terraform/template"))
-      template = env.get_template("terraform.tfvars.j2")
-      output_content = template.render(project_id=project_id, **HARD_CODED_VALUES, **user_vars)
-      ...
-  ```
-
-- **Terraform Execution:**
-  ```python
-  def run_terraform():
-      subprocess.run(["terraform", "init"], ...)
-      subprocess.run(["terraform", "apply", "-auto-approve"], ...)
-  ```
-
 ---
 
 ## Deployment Process

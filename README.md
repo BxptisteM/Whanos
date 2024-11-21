@@ -15,7 +15,7 @@ Create an automated pipeline that:
 2. Identifies the application technology.
 3. Builds a container image.
 4. Pushes the image to a Docker registry.
-5. Deploys the application in a Kubernetes cluster if a valid `whanos.yml` file exists.
+5. Deploys the application in a Kubernetes cluster.
 
 ---
 
@@ -136,7 +136,7 @@ For detailed setup instructions, refer to the [Documentation](docs/) folder. Key
 
 ## 🔗 Contributions
 
-We welcome contributions! Please check out the [Contributing Guide](docs/CONTRIBUTING.md) for setup instructions and contribution guidelines.
+We welcome contributions! Please check out the [Contributing Guide](CONTRIBUTING.md) for setup instructions and contribution guidelines.
 
 ---
 

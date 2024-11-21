@@ -1,0 +1,5 @@
+python-dotenv
+jinja2
+tqdm
+termcolor
+flake8

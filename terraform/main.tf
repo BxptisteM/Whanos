@@ -42,7 +42,6 @@ resource "google_compute_instance" "vm_instance" {
   }
 }
 
-
 output "vm_external_ip" {
   value = google_compute_instance.vm_instance.network_interface[0].access_config[0].nat_ip
 }
@@ -58,3 +57,13 @@ variable "disk_size" {
   type = number
 }
 variable "ssh_keys" {}
+
+module "k8s_nodes" {
+  source       = "./modules/compute"
+  project_id   = var.project_id
+  node_count   = 3
+  machine_type = "e2-medium"
+  disk_image   = "projects/debian-cloud/global/images/debian-12-bookworm-v20241112"
+  network      = "default"
+  ssh_keys     = var.ssh_keys
+}

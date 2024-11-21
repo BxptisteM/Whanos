@@ -13,7 +13,7 @@ env:
   EPITECH_REPOSITORY_LINK: "git@github.com:EpitechPromo2027/B-DOP-500-NAN-5-1-whanos-dragos.suceveanu.git"
 
 permissions:
-  contents: read, write
+  contents: write
 
 jobs:
 

@@ -1,0 +1,45 @@
+name: New feature
+description: Suggestion or request for adding a feature
+labels: ["enhancement"]
+projects: ["BxptisteM/Projects/Whanos"]
+
+body:
+
+  - type: markdown
+    attributes:
+      value: |
+        Please fill out each of the sections below to best describe your request
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Feature description
+      placeholder: Complete description of the feature + link to a specification document
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Examples
+      placeholder: |
+        Screenshots or videos demonstrating the feature
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: "What is the priority?"
+      options:
+        - "1"
+        - "2"
+        - "3"
+
+
+  - type: dropdown
+    id: assign
+    attributes:
+      label: "What is the approximate size (in terms of work time) of the feature?"
+      options:
+        - "S"
+        - "M"
+        - "L"

@@ -1,0 +1,74 @@
+message="$(cat "$1")"
+commit_title=$(echo "$message" | head -n1)
+
+if [ -z "$message" ]; then
+  echo "------------------------------------------"
+  echo "🚨 Empty commit message!"
+  echo "Please provide a meaningful commit message"
+  echo "-"
+  echo "For more information, check script in .husky/commit-msg"
+  echo "-"
+  exit 1
+fi
+
+if [ ${#commit_title} -gt 100 ]; then
+  echo "------------------------------------------"
+  echo "🚨 Too long commit title!"
+  echo "The commit title must not exceed 100 characters"
+  echo "-"
+  echo "Your commit message was:"
+  echo "$message"
+  echo "-"
+  echo "For more information, check script in .husky/commit-msg"
+  echo "-"
+  exit 1
+fi
+
+if [ ${#commit_title} -lt 5 ]; then
+  echo "------------------------------------------"
+  echo "🚨 Too short commit title!"
+  echo "The commit title must have at least 5 characters"
+  echo "-"
+  echo "Your title message was:"
+  echo "$message"
+  echo "-"
+  echo "For more information, check script in .husky/commit-msg"
+  echo "-"
+  exit 1
+fi
+
+# If it's a merge message and it does not start with :twisted_rightwards_arrows:
+# then wee automatically add it
+if echo "$commit_title" | grep -qE "^Merge";
+then
+  echo "------------------------------------------"
+  echo "🚨 Missing :twisted_rightwards_arrows: emoji!"
+  echo "Merge commit messages must start with the :twisted_rightwards_arrows: emoji"
+  echo "We automatically added it for you"
+  echo "-"
+  echo "Your commit message was:"
+  echo "$message"
+  echo "-"
+  echo "For more information, check script in .husky/commit-msg"
+  echo "-"
+  echo ":twisted_rightwards_arrows: $message" > "$1"
+  exit 0
+fi
+
+requiredPattern="^:(art|zap|fire|bug|ambulance|sparkles|memo|rocket|lipstick|tada|white_check_mark|lock|closed_lock_with_key|bookmark|rotating_light|construction|green_heart|arrow_down|arrow_up|pushpin|construction_worker|chart_with_upwards_trend|recycle|heavy_plus_sign|heavy_minus_sign|wrench|hammer|globe_with_meridians|pencil2|poop|rewind|twisted_rightwards_arrows|package|alien|truck|page_facing_up|boom|bento|wheelchair|bulb|beers|speech_balloon|card_file_box|loud_sound|mute|busts_in_silhouette|children_crossing|building_construction|iphone|clown_face|egg|see_no_evil|camera_flash|alembic|mag|label|seedling|triangular_flag_on_post|goal_net|dizzy|wastebasket|passport_control|adhesive_bandage|monocle_face|coffin|test_tube|necktie|stethoscope|bricks|technologist|money_with_wings|thread|safety_vest): .+$"
+if ! echo "$commit_title" | grep -qE "$requiredPattern";
+then
+  echo "------------------------------------------"
+  echo "🚨 Wrong commit title!"
+  echo "The commit title must have this format:"
+  echo ":emoji: <message>"
+  echo "Allowed emojis with their meanings are available at https://gitmoji.dev/"
+  echo "Example: \":art: Improve the design\""
+  echo "-"
+  echo "Your commit message was:"
+  echo "$message"
+  echo "-"
+  echo "For more information, check script in .husky/commit-msg"
+  echo "-"
+  exit 1
+fi

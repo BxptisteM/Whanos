@@ -42,7 +42,7 @@ jobs:
 
       - name: Configure Wiki access
         env:
-          WIKI_URL: "https://${{ secrets.GH_TOKEN }}@github.com/BxptisteM/testworkflow.wiki.git"
+          WIKI_URL: "https://${{ secrets.GH_TOKEN }}@github.com/BxptisteM/Whanos.wiki.git"
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"

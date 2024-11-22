@@ -1,3 +1,9 @@
+resource "google_compute_address" "static_ips" {
+  count  = var.node_count
+  name   = "k8s-node-ip-${count.index}"
+  region = var.region
+}
+
 resource "google_compute_instance" "k8s_nodes" {
   count                     = var.node_count
   name                      = "k8s-node-${count.index}"
@@ -13,6 +19,9 @@ resource "google_compute_instance" "k8s_nodes" {
 
   network_interface {
     network = var.network
+    access_config {
+      nat_ip = google_compute_address.static_ips[count.index].address
+    }
   }
 
   scheduling {

@@ -31,3 +31,8 @@ variable "ssh_keys" {
   type        = string
   description = "The SSH keys to add to the instances"
 }
+
+variable "region" {
+  description = "The region to create the network in"
+  type        = string
+}

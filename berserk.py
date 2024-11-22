@@ -1,6 +1,7 @@
 from cli.args import get_args
 from cli.setup.server_init import server_init
 from cli.install.install import install
+from cli.cluster.cluster import cluster
 
 if __name__ == "__main__":
     args = get_args()
@@ -8,3 +9,5 @@ if __name__ == "__main__":
         server_init()
     if args.install:
         install()
+    if args.cluster:
+        cluster()

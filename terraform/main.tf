@@ -4,6 +4,12 @@ provider "google" {
   zone    = var.zone
 }
 
+
+module "vpc" {
+  source       = "./modules/network"
+  network_name = "whanos-vpc"
+}
+
 resource "google_compute_instance" "vm_instance" {
   name         = var.vm_name
   machine_type = var.machine_type
@@ -18,7 +24,7 @@ resource "google_compute_instance" "vm_instance" {
   }
 
   network_interface {
-    subnetwork = "default"
+    network = module.vpc.vpc_network
 
     access_config {
       network_tier = "PREMIUM"
@@ -64,6 +70,6 @@ module "k8s_nodes" {
   node_count   = 3
   machine_type = "e2-medium"
   disk_image   = "projects/debian-cloud/global/images/debian-12-bookworm-v20241112"
-  network      = "default"
+  network      = module.vpc.vpc_network
   ssh_keys     = var.ssh_keys
 }

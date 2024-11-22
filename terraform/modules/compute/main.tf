@@ -1,8 +1,9 @@
 resource "google_compute_instance" "k8s_nodes" {
-  count        = var.node_count
-  name         = "k8s-node-${count.index}"
-  project      = var.project_id
-  machine_type = var.machine_type
+  count                     = var.node_count
+  name                      = "k8s-node-${count.index}"
+  project                   = var.project_id
+  machine_type              = var.machine_type
+  allow_stopping_for_update = true
 
   boot_disk {
     initialize_params {

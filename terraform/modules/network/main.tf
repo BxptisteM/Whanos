@@ -11,5 +11,5 @@ resource "google_compute_firewall" "vpc_firewall_ssh" {
     protocol = "tcp"
     ports    = ["22"]
   }
-  source_tags = ["whanos-master"]
+  target_tags = ["wanos-vm"]
 }

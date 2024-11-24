@@ -4,6 +4,15 @@ provider "google" {
   zone    = var.zone
 }
 
+resource "google_project_service" "cloud_resource_manager" {
+  service            = "cloudresourcemanager.googleapis.com"
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "compute" {
+  service            = "compute.googleapis.com"
+  disable_on_destroy = false
+}
 
 module "vpc" {
   source       = "./modules/network"
@@ -14,6 +23,7 @@ resource "google_compute_instance" "vm_instance" {
   name         = var.vm_name
   machine_type = var.machine_type
   zone         = var.zone
+  tags         = ["wanos-vm"]
 
   boot_disk {
     initialize_params {

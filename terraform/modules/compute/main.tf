@@ -10,6 +10,7 @@ resource "google_compute_instance" "k8s_nodes" {
   project                   = var.project_id
   machine_type              = var.machine_type
   allow_stopping_for_update = true
+  tags = [ "wanos-vm" ]
 
   boot_disk {
     initialize_params {

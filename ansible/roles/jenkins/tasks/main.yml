@@ -1,12 +1,10 @@
 ---
-# Install OpenJDK 17
 - name: Install OpenJDK 17
   apt:
     name: openjdk-17-jdk
     state: present
     update_cache: yes
 
-# Set JAVA_HOME and add to PATH
 - name: Set JAVA_HOME and PATH
   copy:
     dest: /etc/profile.d/java.sh
@@ -17,7 +15,6 @@
     group: root
     mode: '0644'
 
-# Source the Java environment
 - name: Source Java environment
   shell: source /etc/profile.d/java.sh
   args:
@@ -50,54 +47,67 @@
     name: jenkins
     state: present
 
-# Enable Jenkins service
+- name: Disable Jenkins service
+  systemd:
+    name: jenkins
+    enabled: no
+
+- name: Temporary stop Jenkins service
+  systemd:
+    name: jenkins
+    state: stopped
+
+- name: Upload new jenkins service
+  become: true
+  ansible.builtin.copy:
+    src: files/jenkins.service
+    dest: /lib/systemd/system/jenkins.service
+
 - name: Enable Jenkins service
   systemd:
     name: jenkins
     enabled: yes
 
-# Restart Jenkins service
 - name: Restart Jenkins service
   systemd:
     name: jenkins
     state: restarted
 
-# Download Jenkins plugins
-- name: Download Jenkins plugins
-  get_url:
-    url: "{{ item }}"
-    dest: "/tmp/{{ item.split('/')[-1] }}"
-  loop:
-    - https://updates.jenkins.io/latest/configuration-as-code.hpi
-    - https://updates.jenkins.io/latest/json-api.hpi
-    - https://updates.jenkins.io/latest/snakeyaml-api.hpi
-    - https://updates.jenkins.io/latest/prism-api.hpi
-    - https://updates.jenkins.io/latest/caffeine-api.hpi
-    - https://updates.jenkins.io/latest/antisamy-markup-formatter.hpi
-    - https://updates.jenkins.io/latest/bootstrap5-api.hpi
-    - https://updates.jenkins.io/download/plugins/commons-text-api/1.12.0-129.v99a_50df237f7/commons-text-api.hpi
-    - https://updates.jenkins.io/download/plugins/font-awesome-api/6.5.2-1/font-awesome-api.hpi
-    - https://updates.jenkins.io/download/plugins/commons-lang3-api/3.14.0-76.vda_5591261cfe/commons-lang3-api.hpi
-    - https://updates.jenkins.io/download/plugins/plugin-util-api/4.1.0/plugin-util-api.hpi
-    - https://updates.jenkins.io/download/plugins/workflow-api/1336.vee415d95c521/workflow-api.hpi
-    - https://updates.jenkins.io/download/plugins/workflow-step-api/678.v3ee58b_469476/workflow-step-api.hpi
-    - https://updates.jenkins.io/download/plugins/workflow-support/920.v59f71ce16f04/workflow-support.hpi
-    - https://updates.jenkins.io/download/plugins/scm-api/696.v778d637b_a_762/scm-api.hpi
-    - https://updates.jenkins.io/download/plugins/structs/338.v848422169819/structs.hpi
-    - https://updates.jenkins.io/download/plugins/asm-api/9.7-33.v4d23ef79fcc8/asm-api.hpi
-    - https://updates.jenkins.io/download/plugins/script-security/1341.va_2819b_414686/script-security.hpi
+# - name: Download Jenkins plugins
+#   get_url:
+#     url: "{{ item }}"
+#     dest: "/tmp/{{ item.split('/')[-1] }}"
+#   loop:
+#     - https://updates.jenkins.io/latest/configuration-as-code.hpi
+#     - https://updates.jenkins.io/latest/json-api.hpi
+#     - https://updates.jenkins.io/latest/snakeyaml-api.hpi
+#     - https://updates.jenkins.io/latest/prism-api.hpi
+#     - https://updates.jenkins.io/latest/caffeine-api.hpi
+#     - https://updates.jenkins.io/latest/antisamy-markup-formatter.hpi
+#     - https://updates.jenkins.io/latest/bootstrap5-api.hpi
+#     - https://updates.jenkins.io/download/plugins/commons-text-api/1.12.0-129.v99a_50df237f7/commons-text-api.hpi
+#     - https://updates.jenkins.io/download/plugins/font-awesome-api/6.5.2-1/font-awesome-api.hpi
+#     - https://updates.jenkins.io/download/plugins/commons-lang3-api/3.14.0-76.vda_5591261cfe/commons-lang3-api.hpi
+#     - https://updates.jenkins.io/download/plugins/plugin-util-api/4.1.0/plugin-util-api.hpi
+#     - https://updates.jenkins.io/download/plugins/workflow-api/1336.vee415d95c521/workflow-api.hpi
+#     - https://updates.jenkins.io/download/plugins/workflow-step-api/678.v3ee58b_469476/workflow-step-api.hpi
+#     - https://updates.jenkins.io/download/plugins/workflow-support/920.v59f71ce16f04/workflow-support.hpi
+#     - https://updates.jenkins.io/download/plugins/scm-api/696.v778d637b_a_762/scm-api.hpi
+#     - https://updates.jenkins.io/download/plugins/structs/338.v848422169819/structs.hpi
+#     - https://updates.jenkins.io/download/plugins/asm-api/9.7-33.v4d23ef79fcc8/asm-api.hpi
+#     - https://updates.jenkins.io/download/plugins/script-security/1341.va_2819b_414686/script-security.hpi
 
-# Copy plugins to Jenkins plugins folder
-- name: Copy plugins to Jenkins plugins folder
-  copy:
-    src: /tmp/
-    dest: /var/lib/jenkins/plugins/
-    remote_src: yes
+# # Copy plugins to Jenkins plugins folder
+# - name: Copy plugins to Jenkins plugins folder
+#   copy:
+#     src: /tmp/
+#     dest: /var/lib/jenkins/plugins/
+#     remote_src: yes
 
-# Set ownership of plugins
-- name: Set ownership for Jenkins plugins
-  file:
-    path: /var/lib/jenkins/plugins/
-    owner: jenkins
-    group: jenkins
-    recurse: yes
+# # Set ownership of plugins
+# - name: Set ownership for Jenkins plugins
+#   file:
+#     path: /var/lib/jenkins/plugins/
+#     owner: jenkins
+#     group: jenkins
+#     recurse: yes

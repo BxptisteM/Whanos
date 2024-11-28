@@ -1,13 +1,14 @@
 from termcolor import colored
 import subprocess
 
+
 def gcloud_auth():
     print(colored("Authenticating with Google Cloud...", "yellow"))
     process = subprocess.Popen(
         ["gcloud", "auth", "login", "--no-launch-browser"],
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
-        text=True
+        text=True,
     )
 
     for line in process.stdout:
@@ -19,15 +20,20 @@ def gcloud_auth():
     process.wait()
 
     if process.returncode != 0:
-        raise Exception(colored("Failed to authenticate with gcloud. Please check your setup.", "red"))
-    
+        raise Exception(
+            colored(
+                "Failed to authenticate with gcloud. Please check your setup.", "red"
+            )
+        )
+
+
 def gcloud_project_configuration(project_id):
     print(colored(f"Configuring GCP project: {project_id}...", "yellow"))
     process = subprocess.run(
         ["gcloud", "config", "set", "project", project_id],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-        text=True
+        text=True,
     )
 
     if process.returncode != 0:

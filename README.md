@@ -35,11 +35,10 @@ Create an automated pipeline that:
 This project leverages a robust DevOps stack:
 
 - **Python**: Utility scripts for automation ![Python Logo](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)
-- **Terraform**: Virtual machine creation ![Terraform Logo](https://img.shields.io/badge/Terraform-623CE4?logo=terraform&logoColor=white)
+- **Terraform**: Master machine and cluster creation ![Terraform Logo](https://img.shields.io/badge/Terraform-623CE4?logo=terraform&logoColor=white)
 - **Ansible**: VM setup and configuration ![Ansible Logo](https://img.shields.io/badge/Ansible-EE0000?logo=ansible&logoColor=white)
 - **Jenkins (JCasC + JobDSL)**: CI/CD pipeline and job management ![Jenkins Logo](https://img.shields.io/badge/Jenkins-D24939?logo=jenkins&logoColor=white)
-- **Kubespray**: Kubernetes cluster provisioning ![Kubernetes Logo](https://img.shields.io/badge/Kubernetes-326CE5?logo=kubernetes&logoColor=white)
-- **DockerHub**: Docker image registry ![Docker Logo](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)
+- **GoogleCloud Registry**: Docker image registry ![Docker Logo](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)
 - **Helm**: Kubernetes application deployment and updates ![Helm Logo](https://img.shields.io/badge/Helm-0F1689?logo=helm&logoColor=white)
 
 ---

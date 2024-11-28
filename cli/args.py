@@ -3,7 +3,7 @@ import argparse
 
 def get_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        prog="berserkcli",
+        prog="werserkcli",
         description="CLI for the Whanos Project",
     )
     parser.add_argument(
@@ -25,7 +25,7 @@ def get_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--cluster",
-        help="Setup the kubernetes cluster",
+        help="Configure kubectl to connect to the cluster",
         default=False,
         action="store_true",
     )

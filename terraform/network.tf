@@ -21,3 +21,15 @@ resource "google_compute_firewall" "vpc_firewall_ssh" {
     ports    = ["22"]
   }
 }
+
+resource "google_compute_firewall" "vpc_firewall_http" {
+  name          = "vpc-firewall-jenkins"
+  network       = google_compute_network.vpc.name
+  target_tags   = ["jenkins-vm"]
+  source_ranges = ["0.0.0.0/0"]
+
+  allow {
+    protocol = "tcp"
+    ports    = ["8080"]
+  }
+}

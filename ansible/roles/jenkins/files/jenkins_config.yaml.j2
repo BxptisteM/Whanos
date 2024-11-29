@@ -7,7 +7,7 @@ jenkins:
       users:
       - id: "admin"
         name: 'Admin'
-        password: 'admin'
+        password: "{{ jenkins_admin_password }}"
 
   authorizationStrategy:
     roleBased:

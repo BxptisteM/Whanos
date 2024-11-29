@@ -57,10 +57,23 @@
     state: directory
   become: true
 
-- name: Copy JCASC Config
+- name: Load environment variables from .env file
+  set_fact:
+    jenkins_admin_password: "{{ lookup('ansible.builtin.env', 'JENKINS_ADMIN_PASSWORD') }}"
+
+- name: Ensure password is defined
+  assert:
+    that:
+      - jenkins_admin_password is defined
+      - jenkins_admin_password != ''
+    fail_msg: "JENKINS_ADMIN_PASSWORD is not defined in .env file"
+    success_msg: "Password is set"
+
+- name: Copy JCASC Config with password
   template:
-    src: ../files/jenkins_config.yaml
-    dest: /var/lib/jenkins/casc_configs/
+    src: ../files/jenkins_config.yaml.j2
+    dest: /var/lib/jenkins/casc_configs/jenkins_config.yaml
+    mode: '0644'
   become: true
 
 - name: Start Jenkins service

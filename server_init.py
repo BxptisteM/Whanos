@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from jinja2 import Environment, FileSystemLoader
 import subprocess
 from termcolor import colored
+import time
 
 load_dotenv()
 
@@ -154,7 +155,7 @@ def update_ansible_inventory(vm_ip, ssh_username, private_key_path):
 
 def remove_old_ssh_key(vm_ip):
     known_hosts_path = Path.home() / ".ssh" / "known_hosts"
-    subprocess.run(["ssh-keygen", "-f", str(known_hosts_path), "-R", vm_ip], check=True)
+    subprocess.run(["ssh-keygen", "-f", str(known_hosts_path), "-R", vm_ip], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     print(colored(f"Old SSH key for {vm_ip} removed from {known_hosts_path}.", "green"))
 
 
@@ -175,6 +176,11 @@ if __name__ == "__main__":
         remove_old_ssh_key(vm_ip)
 
         print(colored("\nYou successfully created your VM on GCP!", "green"))
+        subprocess.run("export $(grep -v '^#' .env | xargs)", shell=True, check=True)
+        print(colored("Installing Jenkins on your VM...", "yellow"))
+        time.sleep(10)
+        subprocess.run("ansible-playbook -i ansible/inventory ansible/jenkins.yml", shell=True, check=True)
+        print(colored("Jenkins is now installed on your VM!", "green"))
         print(colored("You can access it via SSH using the following command:", "cyan"))
         print(colored(f"ssh {ssh_username}@{vm_ip}", "blue"))
     except Exception as e:

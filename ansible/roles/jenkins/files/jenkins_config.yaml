@@ -1,0 +1,21 @@
+jenkins:
+  systemMessage: 'Whanos Jenkins Instance'
+  securityRealm:
+    local:
+      allowsSignup: false
+      enableCaptcha: false
+      users:
+      - id: "admin"
+        name: 'Admin'
+        password: 'admin'
+
+  authorizationStrategy:
+    roleBased:
+      roles:
+        global:
+        - name: "admin"
+          description: "Whanos Jenkins administrators"
+          permissions:
+          - "Overall/Administer"
+          entries:
+          - user: "admin"

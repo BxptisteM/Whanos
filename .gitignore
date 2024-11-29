@@ -14,3 +14,6 @@ utils
 node_modules
 package-lock.json
 .husky/_
+
+# Ansible
+inventory

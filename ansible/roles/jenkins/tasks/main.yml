@@ -38,46 +38,64 @@
   apt:
     update_cache: yes
 
+- name: Upload new jenkins service
+  become: true
+  ansible.builtin.copy:
+    src: ../files/override.conf
+    mode: 600
+    dest: /etc/systemd/system/jenkins.service.d/
+  register: service_upload
+
 - name: Install Jenkins
   apt:
     name: jenkins
     state: present
 
+- name: Add JCASC directory
+  file:
+    path: '/var/lib/jenkins/casc_configs'
+    state: directory
+  become: true
+
+- name: Copy JCASC Config
+  template:
+    src: ../files/jenkins_config.yaml
+    dest: /var/lib/jenkins/casc_configs/
+  become: true
+
+- name: Start Jenkins service
+  systemd:
+    name: jenkins
+    state: started
+  become: true
+
 - name: Install Jenkins plugin job-dsl
-  jenkins_plugin:
+  community.general.jenkins_plugin:
     name: "job-dsl"
     state: latest
     timeout: 120
 
 - name: Install Jenkins plugin configuration-as-code
-  jenkins_plugin:
+  community.general.jenkins_plugin:
     name: "configuration-as-code"
     state: latest
     timeout: 120
 
 - name: Install Jenkins plugin github
-  jenkins_plugin:
+  community.general.jenkins_plugin:
     name: "github"
     state: latest
     timeout: 120
 
-- name: Disable Jenkins service
+- name: Install Jenkins plugin role-strategy
+  community.general.jenkins_plugin:
+    name: "role-strategy"
+    state: latest
+    timeout: 120
+
+- name: Reload Jenkins service
   systemd:
     name: jenkins
-    enabled: no
-
-- name: Temporary stop Jenkins service
-  systemd:
-    name: jenkins
-    state: stopped
-
-- name: Upload new jenkins service
+    state: restarted
+    daemon_reload: true
   become: true
-  ansible.builtin.copy:
-    src: files/jenkins.service
-    dest: /lib/systemd/system/jenkins.service
-
-- name: Enable Jenkins service
-  systemd:
-    name: jenkins
-    enabled: yes

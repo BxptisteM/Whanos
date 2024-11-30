@@ -33,10 +33,12 @@
     owner: root
     group: root
     mode: '0644'
+    force: no # If the file exists, don't overwrite it (+idempotent)
 
 - name: Update package cache
   apt:
     update_cache: yes
+    cache_valid_time: 86400 # Cache is valid for 1 hour it wont be updated if it's not expired (+idempotent)
 
 - name: Upload new jenkins service
   become: true
@@ -44,12 +46,12 @@
     src: ../files/override.conf
     mode: 600
     dest: /etc/systemd/system/jenkins.service.d/
-  register: service_upload
 
 - name: Install Jenkins
   apt:
     name: jenkins
-    state: present
+    state: latest
+    update_cache: yes
 
 - name: Add JCASC directory
   file:
@@ -59,17 +61,16 @@
 
 - name: Load environment variables from .env file
   set_fact:
-    jenkins_admin_password: "{{ lookup('ansible.builtin.env', 'JENKINS_ADMIN_PASSWORD') }}"
+    jenkins_admin_password: "{{ lookup('ansible.builtin.env', 'JENKINS_ADMIN_PASSWORD') | default('') }}"
 
 - name: Ensure password is defined
   assert:
     that:
-      - jenkins_admin_password is defined
       - jenkins_admin_password != ''
     fail_msg: "JENKINS_ADMIN_PASSWORD is not defined in .env file"
     success_msg: "Password is set"
 
-- name: Copy JCASC Config with password
+- name: Copy JCASC Config template
   template:
     src: ../files/jenkins_config.yaml.j2
     dest: /var/lib/jenkins/casc_configs/jenkins_config.yaml

@@ -61,7 +61,8 @@ def get_user_variables():
     private_key_path = os.getenv("SSH_PRIVATE_KEY_PATH")
 
     if not ssh_key_path or not ssh_username or not private_key_path:
-        raise ValueError(colored("SSH_PUBLIC_KEY_PATH, SSH_USERNAME, and SSH_PRIVATE_KEY_PATH must be defined in the .env file", "red"))
+        raise ValueError(colored("SSH_PUBLIC_KEY_PATH, SSH_USERNAME, and SSH_PRIVATE_KEY_PATH must
+            be defined in the .env file", "red"))
 
     ssh_key_path = Path(ssh_key_path).expanduser()
     private_key_path = Path(private_key_path).expanduser()
@@ -155,7 +156,8 @@ def update_ansible_inventory(vm_ip, ssh_username, private_key_path):
 
 def remove_old_ssh_key(vm_ip):
     known_hosts_path = Path.home() / ".ssh" / "known_hosts"
-    subprocess.run(["ssh-keygen", "-f", str(known_hosts_path), "-R", vm_ip], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    subprocess.run(["ssh-keygen", "-f", str(known_hosts_path), "-R", vm_ip],
+        check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     print(colored(f"Old SSH key for {vm_ip} removed from {known_hosts_path}.", "green"))
 
 
@@ -179,7 +181,8 @@ if __name__ == "__main__":
         subprocess.run("export $(grep -v '^#' .env | xargs)", shell=True, check=True)
         print(colored("Installing Jenkins on your VM...", "yellow"))
         time.sleep(10)
-        subprocess.run("ansible-playbook -i ansible/inventory ansible/jenkins.yml", shell=True, check=True)
+        subprocess.run("ansible-playbook -i ansible/inventory ansible/jenkins.yml",
+            shell=True, check=True)
         print(colored("Jenkins is now installed on your VM!", "green"))
         print(colored("You can access it via SSH using the following command:", "cyan"))
         print(colored(f"ssh {ssh_username}@{vm_ip}", "blue"))

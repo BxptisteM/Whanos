@@ -1,0 +1,124 @@
+---
+- name: Install OpenJDK 17
+  apt:
+    name: openjdk-17-jdk
+    state: present
+    update_cache: yes
+
+- name: Set JAVA_HOME and PATH
+  copy:
+    dest: /etc/profile.d/java.sh
+    content: |
+      export JAVA_HOME=$(dirname $(dirname $(readlink $(readlink $(which java)))))
+      export PATH=$PATH:$JAVA_HOME/bin
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Source Java environment
+  shell: source /etc/profile.d/java.sh
+  args:
+    executable: /bin/bash
+
+- name: Add Jenkins key
+  shell: curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | tee /usr/share/keyrings/jenkins-keyring.asc
+  args:
+    creates: /usr/share/keyrings/jenkins-keyring.asc
+
+- name: Add Jenkins repository
+  copy:
+    dest: /etc/apt/sources.list.d/jenkins.list
+    content: |
+      deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/
+    owner: root
+    group: root
+    mode: '0644'
+    force: no # If the file exists, don't overwrite it (+idempotent)
+
+- name: Update package cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 86400 # Cache is valid for 1 hour it wont be updated if it's not expired (+idempotent)
+
+- name: Create directory for Jenkins override configuration
+  become: true
+  file:
+    path: /etc/systemd/system/jenkins.service.d
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Upload new jenkins service
+  become: true
+  template:
+    src: ../files/override.conf.j2
+    dest: /etc/systemd/system/jenkins.service.d/override.conf
+    mode: 600
+
+- name: Install Jenkins
+  apt:
+    name: jenkins
+    state: latest
+    update_cache: yes
+
+- name: Add JCASC directory
+  file:
+    path: '/var/lib/jenkins/casc_configs'
+    state: directory
+  become: true
+
+- name: Load environment variables from .env file
+  set_fact:
+    jenkins_admin_password: "{{ lookup('ansible.builtin.env', 'JENKINS_ADMIN_PASSWORD') | default('') }}"
+
+- name: Ensure password is defined
+  assert:
+    that:
+      - jenkins_admin_password != ''
+    fail_msg: "JENKINS_ADMIN_PASSWORD is not defined in .env file"
+    success_msg: "Password is set"
+
+- name: Copy JCASC Config template
+  template:
+    src: ../files/jenkins_config.yaml.j2
+    dest: /var/lib/jenkins/casc_configs/jenkins_config.yaml
+    mode: '0644'
+  become: true
+
+- name: Start Jenkins service
+  systemd:
+    name: jenkins
+    state: started
+  become: true
+
+- name: Install Jenkins plugin job-dsl
+  community.general.jenkins_plugin:
+    name: "job-dsl"
+    state: latest
+    timeout: 120
+
+- name: Install Jenkins plugin configuration-as-code
+  community.general.jenkins_plugin:
+    name: "configuration-as-code"
+    state: latest
+    timeout: 120
+
+- name: Install Jenkins plugin github
+  community.general.jenkins_plugin:
+    name: "github"
+    state: latest
+    timeout: 120
+
+- name: Install Jenkins plugin role-strategy
+  community.general.jenkins_plugin:
+    name: "role-strategy"
+    state: latest
+    timeout: 120
+
+- name: Reload Jenkins service
+  systemd:
+    name: jenkins
+    state: restarted
+    daemon_reload: true
+  become: true

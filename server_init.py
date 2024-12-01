@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from jinja2 import Environment, FileSystemLoader
 import subprocess
 from termcolor import colored
+import time
 
 load_dotenv()
 
@@ -57,19 +58,27 @@ def configure_gcloud_project(project_id):
 def get_user_variables():
     ssh_key_path = os.getenv("SSH_PUBLIC_KEY_PATH")
     ssh_username = os.getenv("SSH_USERNAME")
+    private_key_path = os.getenv("SSH_PRIVATE_KEY_PATH")
 
-    if not ssh_key_path or not ssh_username:
-        raise ValueError(colored("SSH_PUBLIC_KEY_PATH and SSH_USERNAME must be defined in the .env file", "red"))
+    if not ssh_key_path or not ssh_username or not private_key_path:
+        raise ValueError(colored(
+            "SSH_PUBLIC_KEY_PATH, SSH_USERNAME, and SSH_PRIVATE_KEY_PATH must be defined in the .env file", "red"))
 
     ssh_key_path = Path(ssh_key_path).expanduser()
+    private_key_path = Path(private_key_path).expanduser()
+
     if not ssh_key_path.exists():
         raise FileNotFoundError(colored(f"SSH key not found: {ssh_key_path}", "red"))
+    if not private_key_path.exists():
+        raise FileNotFoundError(colored(f"Private SSH key not found: {private_key_path}", "red"))
 
     with ssh_key_path.open("r") as f:
         ssh_public_key = f.read().strip()
 
     return {
-        "ssh_keys": f"{ssh_username}:{ssh_public_key}"
+        "ssh_keys": f"{ssh_username}:{ssh_public_key}",
+        "ssh_username": ssh_username,
+        "private_key_path": private_key_path
     }
 
 
@@ -120,6 +129,38 @@ def run_terraform():
     return vm_ip
 
 
+def update_ansible_inventory(vm_ip, ssh_username, private_key_path):
+    ansible_dir = Path("ansible")
+    inventory_path = ansible_dir / "inventory"
+
+    ansible_dir.mkdir(exist_ok=True)
+
+    inventory_entry = f"""[jenkins]
+{vm_ip} ansible_user={ssh_username} ansible_ssh_private_key_file={private_key_path}"""
+
+    if inventory_path.exists():
+        with inventory_path.open("r") as f:
+            current_content = f.read()
+
+        if inventory_entry.strip() != current_content.strip():
+            with inventory_path.open("w") as f:
+                f.write(inventory_entry)
+            print(colored("Inventory file updated.", "green"))
+        else:
+            print(colored("Inventory file is already up-to-date.", "yellow"))
+    else:
+        with inventory_path.open("w") as f:
+            f.write(inventory_entry)
+        print(colored("Inventory file created.", "green"))
+
+
+def remove_old_ssh_key(vm_ip):
+    known_hosts_path = Path.home() / ".ssh" / "known_hosts"
+    subprocess.run(["ssh-keygen", "-f", str(known_hosts_path), "-R", vm_ip],
+        check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    print(colored(f"Old SSH key for {vm_ip} removed from {known_hosts_path}.", "green"))
+
+
 if __name__ == "__main__":
     try:
         print(colored("Welcome to the GCP VM Terraform setup script!", "cyan"))
@@ -129,8 +170,20 @@ if __name__ == "__main__":
         user_vars = get_user_variables()
         generate_terraform_tfvars(project_id, user_vars)
         vm_ip = run_terraform()
-        ssh_username = os.getenv("SSH_USERNAME")
+
+        ssh_username = user_vars["ssh_username"]
+        private_key_path = user_vars["private_key_path"]
+
+        update_ansible_inventory(vm_ip, ssh_username, private_key_path)
+        remove_old_ssh_key(vm_ip)
+
         print(colored("\nYou successfully created your VM on GCP!", "green"))
+        subprocess.run("export $(grep -v '^#' .env | xargs)", shell=True, check=True)
+        print(colored("Installing Jenkins on your VM...", "yellow"))
+        time.sleep(10)
+        subprocess.run("ansible-playbook -i ansible/inventory ansible/jenkins.yml",
+            shell=True, check=True)
+        print(colored("Jenkins is now installed on your VM!", "green"))
         print(colored("You can access it via SSH using the following command:", "cyan"))
         print(colored(f"ssh {ssh_username}@{vm_ip}", "blue"))
     except Exception as e:

@@ -12,7 +12,6 @@ HARD_CODED_VALUES = {
     "image": "projects/debian-cloud/global/images/debian-12-bookworm-v20241112",
     "disk_type": "pd-balanced",
     "disk_size": 10,
-    "node_count": 1,
 }
 
 
@@ -39,14 +38,14 @@ def get_user_variables():
 
 
 def terraform_generate_tfvars(project_id, user_vars):
-    env = Environment(loader=FileSystemLoader("terraform/template"))
+    env = Environment(loader=FileSystemLoader("terraform/master/template"))
     template = env.get_template("terraform.tfvars.j2")
 
     output_content = template.render(
         project_id=project_id, **HARD_CODED_VALUES, **user_vars
     )
 
-    tfvars_path = Path("terraform/terraform.tfvars")
+    tfvars_path = Path("terraform/master/terraform.tfvars")
     with tfvars_path.open("w") as f:
         f.write(output_content)
 
@@ -54,7 +53,7 @@ def terraform_generate_tfvars(project_id, user_vars):
 
 
 def terraform_run():
-    terraform_dir = Path("terraform")
+    terraform_dir = Path("terraform/master")
 
     print(colored("Initializing Terraform...", "yellow"))
     subprocess.run(
@@ -69,7 +68,6 @@ def terraform_run():
     process = subprocess.run(
         ["terraform", "apply", "-auto-approve"],
         cwd=terraform_dir,
-        stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True,
     )

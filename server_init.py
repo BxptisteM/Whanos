@@ -61,8 +61,8 @@ def get_user_variables():
     private_key_path = os.getenv("SSH_PRIVATE_KEY_PATH")
 
     if not ssh_key_path or not ssh_username or not private_key_path:
-        raise ValueError(colored("SSH_PUBLIC_KEY_PATH, SSH_USERNAME, and SSH_PRIVATE_KEY_PATH must
-            be defined in the .env file", "red"))
+        raise ValueError(colored(
+            "SSH_PUBLIC_KEY_PATH, SSH_USERNAME, and SSH_PRIVATE_KEY_PATH must be defined in the .env file", "red"))
 
     ssh_key_path = Path(ssh_key_path).expanduser()
     private_key_path = Path(private_key_path).expanduser()

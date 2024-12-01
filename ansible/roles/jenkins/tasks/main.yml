@@ -40,12 +40,21 @@
     update_cache: yes
     cache_valid_time: 86400 # Cache is valid for 1 hour it wont be updated if it's not expired (+idempotent)
 
+- name: Create directory for Jenkins override configuration
+  become: true
+  file:
+    path: /etc/systemd/system/jenkins.service.d
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
 - name: Upload new jenkins service
   become: true
-  ansible.builtin.copy:
-    src: ../files/override.conf
+  template:
+    src: ../files/override.conf.j2
+    dest: /etc/systemd/system/jenkins.service.d/override.conf
     mode: 600
-    dest: /etc/systemd/system/jenkins.service.d/
 
 - name: Install Jenkins
   apt:

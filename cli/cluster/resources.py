@@ -27,4 +27,3 @@ def generate_cluster_resources():
         raise Exception(colored(f"Terraform apply failed:\n{process.stderr}", "red"))
 
     print(colored("Terraform apply complete!", "green"))
-

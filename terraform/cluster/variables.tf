@@ -13,3 +13,18 @@ variable "region" {
   description = "The region to deploy to"
   type        = string
 }
+
+variable "vpc_name" {
+  description = "The name of the created VPC network"
+  type        = string
+}
+
+variable "subnet_name" {
+  description = "The name of the created subnet"
+  type        = string
+}
+
+variable "zone" {
+  description = "The zone to deploy to"
+  type        = string
+}

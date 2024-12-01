@@ -1,3 +1,9 @@
+provider "google" {
+  project = var.project_id
+  region  = var.region
+  zone    = var.zone
+}
+
 resource "google_project_service" "k8s" {
   service            = "container.googleapis.com"
   disable_on_destroy = false
@@ -15,8 +21,8 @@ resource "google_container_cluster" "primary" {
   remove_default_node_pool = true
   initial_node_count       = 1
 
-  network    = google_compute_network.vpc.name
-  subnetwork = google_compute_subnetwork.subnet.name
+  network    = var.vpc_name
+  subnetwork = var.subnet_name
 
   release_channel {
     channel = "STABLE"

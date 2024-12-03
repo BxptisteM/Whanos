@@ -4,10 +4,21 @@ provider "google" {
   zone    = var.zone
 }
 
+resource "google_project_service" "cloud_resource_manager" {
+  service            = "cloudresourcemanager.googleapis.com"
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "compute" {
+  service            = "compute.googleapis.com"
+  disable_on_destroy = false
+}
+
 resource "google_compute_instance" "vm_instance" {
   name         = var.vm_name
   machine_type = var.machine_type
   zone         = var.zone
+  tags         = ["whanos-vm", "jenkins-vm"]
 
   boot_disk {
     initialize_params {
@@ -18,7 +29,8 @@ resource "google_compute_instance" "vm_instance" {
   }
 
   network_interface {
-    subnetwork = "default"
+    network    = google_compute_network.vpc.name
+    subnetwork = google_compute_subnetwork.subnet.name
 
     access_config {
       network_tier = "PREMIUM"
@@ -42,19 +54,3 @@ resource "google_compute_instance" "vm_instance" {
   }
 }
 
-
-output "vm_external_ip" {
-  value = google_compute_instance.vm_instance.network_interface[0].access_config[0].nat_ip
-}
-
-variable "project_id" {}
-variable "region" {}
-variable "zone" {}
-variable "vm_name" {}
-variable "machine_type" {}
-variable "image" {}
-variable "disk_type" {}
-variable "disk_size" {
-  type = number
-}
-variable "ssh_keys" {}

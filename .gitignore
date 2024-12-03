@@ -8,7 +8,6 @@
 .env
 
 # Development purpose
-utils
 
 # Dependencies
 node_modules

@@ -35,4 +35,10 @@ def get_args() -> argparse.Namespace:
         default=False,
         action="store_true",
     )
+    parser.add_argument(
+        "--registry",
+        help="Create the Docker registry",
+        default=False,
+        action="store_true",
+    )
     return parser.parse_args()

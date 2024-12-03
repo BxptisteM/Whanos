@@ -8,7 +8,6 @@
 .env
 
 # Development purpose
-utils
 
 # Dependencies
 node_modules
@@ -16,3 +15,6 @@ package-lock.json
 .husky/_
 __pycache__
 ansible/inventory/cluster/hosts.yaml
+
+# Ansible
+inventory

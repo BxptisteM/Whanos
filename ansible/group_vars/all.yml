@@ -1,0 +1,3 @@
+jenkins_system_message: 'Whanos Jenkins instance'
+java_opts: "-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false"
+jenkins_port: "8080"

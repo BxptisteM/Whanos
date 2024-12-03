@@ -1,5 +1,6 @@
 import subprocess
 
+
 def get_project_id():
     result = subprocess.run(
         ["gcloud", "config", "get-value", "project"],

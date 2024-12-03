@@ -16,3 +16,6 @@ package-lock.json
 .husky/_
 __pycache__
 ansible/inventory/cluster/hosts.yaml
+
+# Ansible
+inventory

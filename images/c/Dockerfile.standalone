@@ -1,11 +1,13 @@
 FROM gcc:13.2
 
+SHELL ["/bin/bash", "-c"]
+
 WORKDIR /app
 
 COPY . .
 
-RUN "make"
+RUN make
 
-RUN "find . ! -name 'compiled-app' -type f -exec rm -f {} +"
+RUN find . ! -name 'compiled-app' -type f -exec rm -f {} +
 
 CMD [ "./compiled-app" ] 

@@ -1,0 +1,13 @@
+FROM gcc:13.2
+
+SHELL ["/bin/bash", "-c"]
+
+ONBUILD WORKDIR /app
+
+ONBUILD COPY . .
+
+ONBUILD RUN make
+
+ONBUILD RUN find . ! -name 'compiled-app' -type f -exec rm -f {} +
+
+ONBUILD CMD [ "./compiled-app" ] 

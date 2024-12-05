@@ -2,22 +2,13 @@ from jinja2 import Environment, FileSystemLoader
 from termcolor import colored
 from pathlib import Path
 import subprocess
+from cli.utils.project_id import get_project_id
 
 HARD_CODED_VALUES = {
     "region": "europe-west1",
     "node_count": 1,
     "zone": "europe-west1-d",
 }
-
-
-def get_project_id():
-    result = subprocess.run(
-        ["gcloud", "config", "get-value", "project"],
-        check=True,
-        text=True,
-        capture_output=True,
-    )
-    return result.stdout.strip()
 
 
 def get_vpc_name():

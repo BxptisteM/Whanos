@@ -20,6 +20,10 @@ jenkins:
           entries:
           - user: "admin"
 
+security:
+  globalJobDslSecurityConfiguration:
+    useScriptSecurity: false
+
 jobs:
   - file: /var/lib/jenkins/casc_configs/jobs/projects.groovy
   - file: /var/lib/jenkins/casc_configs/jobs/whanos_images.groovy

@@ -101,45 +101,25 @@
     state: started
   become: true
 
-- name: Install Jenkins plugin job-dsl
+- name: Install Jenkins plugins
   community.general.jenkins_plugin:
-    name: "job-dsl"
+    name: "{{ item }}"
     url: "http://{{ jenkins_vm_ip }}:{{ jenkins_port }}"
     url_username: "Admin"
     url_password: "{{ jenkins_admin_password }}"
     state: latest
     timeout: 120
-
-- name: Install Jenkins plugin configuration-as-code
-  community.general.jenkins_plugin:
-    name: "configuration-as-code"
-    url: "http://{{ jenkins_vm_ip }}:{{ jenkins_port }}"
-    url_username: "Admin"
-    url_password: "{{ jenkins_admin_password }}"
-    state: latest
-    timeout: 120
-
-- name: Install Jenkins plugin github
-  community.general.jenkins_plugin:
-    name: "github"
-    url: "http://{{ jenkins_vm_ip }}:{{ jenkins_port }}"
-    url_username: "Admin"
-    url_password: "{{ jenkins_admin_password }}"
-    state: latest
-    timeout: 120
-
-- name: Install Jenkins plugin role-strategy
-  community.general.jenkins_plugin:
-    name: "role-strategy"
-    url: "http://{{ jenkins_vm_ip }}:{{ jenkins_port }}"
-    url_username: "Admin"
-    url_password: "{{ jenkins_admin_password }}"
-    state: latest
-    timeout: 120
+  loop:
+    - job-dsl
+    - configuration-as-code
+    - github
+    - role-strategy
+  register: plugin_result
+  failed_when: false
 
 - name: Reload Jenkins service
   systemd:
     name: jenkins
     state: restarted
     daemon_reload: true
-  become: true
+  when: plugin_result.changed

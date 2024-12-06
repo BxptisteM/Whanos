@@ -8,22 +8,49 @@ freeStyleJob('link-project') {
 
     parameters {
         stringParam('PROJECT_NAME', '', 'The name of the project to link to')
+        stringParam('REPO_URL', '', 'The URL of the repository to link to')
+        credentialsParam('DEPLOY_KEY') {
+            type('com.cloudbees.jenkins.plugins.sshcredentials.impl.BasicSSHUserPrivateKey')
+            required()
+            defaultValue('ssh-key-staging')
+            description('SSH Key for deploying build artifacts')
+        }
+        choiceParam('BRANCH', ['main', 'master', 'develop'], 'Git branch to checkout')
     }
 
     steps {
         dsl {
             text('''
                 def projectName = "${PROJECT_NAME}".trim()
+                def repoUrl = "${REPO_URL}".trim()
+                def deployKey = "${DEPLOY_KEY}".trim()
+                def branchToBuild = "${BRANCH}".trim()
 
-                if (projectName) {
-                    freeStyleJob("Projects/${projectName}") {
-                        description("This job is used to link to the ${projectName} project")
-                        steps {
-                            shell('echo "This is a dummy job for ${projectName}"')
+                    
+                freeStyleJob("Projects/${projectName}") {
+                    description("This job is used to link to the ${projectName} project")
+
+                    logRotator {
+                        daysToKeep(2)
+                        numToKeep(4)
+                        artifactDaysToKeep(2)
+                        artifactNumToKeep(4)
+                    }
+                    scm {
+                        git {
+                            remote {
+                                url("${repoUrl}")
+                                credentials("${deployKey}")
+                            }
+                            branch("${branchToBuild}")
                         }
                     }
-                } else {
-                    error("No project name provided.")
+                    triggers {
+                        scm('H/1 * * * *')
+                    }
+                    steps {
+                        shell('ls -la')
+                    }
                 }
             '''.stripIndent())
         }

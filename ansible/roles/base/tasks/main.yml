@@ -1,0 +1,14 @@
+---
+# tasks file for all the machines
+
+- name: Install necessary packages
+  become: true
+  ansible.builtin.apt:
+    pkg:
+    - git
+    - python3
+
+- name: Set timezone to Europe/Paris
+  become: true
+  community.general.timezone:
+    name: Europe/Paris

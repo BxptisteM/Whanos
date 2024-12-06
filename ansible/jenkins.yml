@@ -1,8 +1,12 @@
 ---
+- name: Base configuration
+  hosts: all
+  become: true
+  roles:
+    - base
+
 - name: Deploy Jenkins
   hosts: all
-  vars:
-    ansible_python_interpreter: /usr/bin/python3
   become: true
   roles:
     - jenkins

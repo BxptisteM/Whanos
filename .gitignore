@@ -18,6 +18,7 @@ ansible/inventory/cluster/hosts.yaml
 
 # Ansible
 inventory
+ansible/group_vars/jenkins.yml
 
 # Project Files
 whanos_example_apps

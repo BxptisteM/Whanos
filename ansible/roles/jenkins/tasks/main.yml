@@ -68,6 +68,15 @@
     state: directory
   become: true
 
+- name: Copy jobs to Jenkins
+  copy:
+    src: ../files/job_dsl.groovy
+    dest: /var/lib/jenkins
+    owner: jenkins
+    group: jenkins
+    mode: '0755'
+  become: true
+
 - name: Load environment variables from .env file
   set_fact:
     jenkins_admin_password: "{{ lookup('ansible.builtin.env', 'JENKINS_ADMIN_PASSWORD') | default('') }}"
@@ -75,7 +84,7 @@
 - name: Ensure password is defined
   assert:
     that:
-      - jenkins_admin_password != ''
+    - jenkins_admin_password != ''
     fail_msg: "JENKINS_ADMIN_PASSWORD is not defined in .env file"
     success_msg: "Password is set"
 
@@ -95,24 +104,36 @@
 - name: Install Jenkins plugin job-dsl
   community.general.jenkins_plugin:
     name: "job-dsl"
+    url: "http://{{ jenkins_vm_ip }}:{{ jenkins_port }}"
+    url_username: "Admin"
+    url_password: "{{ jenkins_admin_password }}"
     state: latest
     timeout: 120
 
 - name: Install Jenkins plugin configuration-as-code
   community.general.jenkins_plugin:
     name: "configuration-as-code"
+    url: "http://{{ jenkins_vm_ip }}:{{ jenkins_port }}"
+    url_username: "Admin"
+    url_password: "{{ jenkins_admin_password }}"
     state: latest
     timeout: 120
 
 - name: Install Jenkins plugin github
   community.general.jenkins_plugin:
     name: "github"
+    url: "http://{{ jenkins_vm_ip }}:{{ jenkins_port }}"
+    url_username: "Admin"
+    url_password: "{{ jenkins_admin_password }}"
     state: latest
     timeout: 120
 
 - name: Install Jenkins plugin role-strategy
   community.general.jenkins_plugin:
     name: "role-strategy"
+    url: "http://{{ jenkins_vm_ip }}:{{ jenkins_port }}"
+    url_username: "Admin"
+    url_password: "{{ jenkins_admin_password }}"
     state: latest
     timeout: 120
 

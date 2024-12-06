@@ -70,8 +70,8 @@
 
 - name: Copy jobs to Jenkins
   copy:
-    src: ../files/job_dsl.groovy
-    dest: /var/lib/jenkins
+    src: ../files/jobs/
+    dest: /var/lib/jenkins/casc_configs/jobs/
     owner: jenkins
     group: jenkins
     mode: '0755'

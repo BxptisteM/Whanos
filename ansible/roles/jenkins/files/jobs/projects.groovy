@@ -49,7 +49,7 @@ freeStyleJob('link-project') {
                         scm('H/1 * * * *')
                     }
                     steps {
-                        shell('/var/lib/jenkins/casc_configs/deployment_pipeline/main.py')
+                        shell("/var/lib/jenkins/casc_configs/deployment_pipeline/main.py --project ${projectName}")
                     }
                 }
             '''.stripIndent())

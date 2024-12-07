@@ -33,12 +33,12 @@
     owner: root
     group: root
     mode: '0644'
-    force: no # If the file exists, don't overwrite it (+idempotent)
+    force: no
 
 - name: Update package cache
   apt:
     update_cache: yes
-    cache_valid_time: 86400 # Cache is valid for 1 hour it wont be updated if it's not expired (+idempotent)
+    cache_valid_time: 86400
 
 - name: Create directory for Jenkins override configuration
   become: true

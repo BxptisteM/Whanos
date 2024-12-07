@@ -23,6 +23,8 @@ jenkins:
 security:
   globalJobDslSecurityConfiguration:
     useScriptSecurity: false
+  gitHostKeyVerificationConfiguration:
+    sshHostKeyVerificationStrategy: "acceptFirstConnectionStrategy"
 
 jobs:
   - file: /var/lib/jenkins/casc_configs/jobs/projects.groovy

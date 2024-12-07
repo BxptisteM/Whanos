@@ -8,7 +8,7 @@ freeStyleJob('link-project') {
 
     parameters {
         stringParam('PROJECT_NAME', '', 'The name of the project to link to')
-        stringParam('REPO_URL', '', 'The URL of the repository to link to')
+        stringParam('REPO_SSH_URL', '', 'The SSH URL of the repository to link to (e.g. git@github.com:username/repo.git)')
         credentialsParam('DEPLOY_KEY') {
             type('com.cloudbees.jenkins.plugins.sshcredentials.impl.BasicSSHUserPrivateKey')
             required()
@@ -22,7 +22,7 @@ freeStyleJob('link-project') {
         dsl {
             text('''
                 def projectName = "${PROJECT_NAME}".trim()
-                def repoUrl = "${REPO_URL}".trim()
+                def repoUrl = "${REPO_SSH_URL}".trim()
                 def deployKey = "${DEPLOY_KEY}".trim()
                 def branchToBuild = "${BRANCH}".trim()
 

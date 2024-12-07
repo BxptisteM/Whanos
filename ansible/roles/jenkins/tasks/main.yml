@@ -68,6 +68,23 @@
     state: directory
   become: true
 
+- name: Copy Deployment Pipeline to Jenkins
+  copy:
+    src: ../files/deployment_pipeline/
+    dest: /var/lib/jenkins/casc_configs/deployment_pipeline/
+    owner: jenkins
+    group: jenkins
+    mode: '0755'
+  become: true
+
+- name: Set Permissions for Deployment Pipeline
+  file:
+    path: /var/lib/jenkins/casc_configs/deployment_pipeline/main.py
+    owner: jenkins
+    group: jenkins
+    mode: '0755'
+  become: true
+
 - name: Copy jobs to Jenkins
   copy:
     src: ../files/jobs/
@@ -110,10 +127,10 @@
     state: latest
     timeout: 120
   loop:
-    - job-dsl
-    - configuration-as-code
-    - github
-    - role-strategy
+  - job-dsl
+  - configuration-as-code
+  - github
+  - role-strategy
   register: plugin_result
   failed_when: false
 

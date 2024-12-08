@@ -1,0 +1,11 @@
+FROM python:3.12-bookworm
+
+SHELL [ "/bin/bash", "-c" ]
+
+ONBUILD WORKDIR /
+
+ONBUILD COPY . .
+
+ONBUILD RUN pip install -r requirements.txt
+
+ONBUILD CMD [ "python", "-m", "app" ]

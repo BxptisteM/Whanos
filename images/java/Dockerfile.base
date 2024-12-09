@@ -1,0 +1,14 @@
+FROM maven:3.9.8-eclipse-temurin-21
+
+SHELL ["/bin/bash", "-c"]
+
+ONBUILD WORKDIR /app
+
+ONBUILD COPY app/pom.xml ./pom.xml
+ONBUILD COPY app/src ./src
+
+ONBUILD RUN mvn package
+
+ONBUILD RUN find . ! -name 'app.jar' -type f -exec rm -f {} +
+
+ONBUILD CMD ["java", "-jar", "target/app.jar"]

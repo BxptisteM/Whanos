@@ -1,0 +1,12 @@
+FROM node:20.9
+
+ONBUILD WORKDIR /app
+
+ONBUILD COPY package.json ./
+ONBUILD COPY package-lock.json ./
+
+ONBUILD RUN npm install
+
+ONBUILD COPY . .
+
+ONBUILD CMD ["node", "."]

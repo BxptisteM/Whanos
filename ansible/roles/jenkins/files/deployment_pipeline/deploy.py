@@ -1,7 +1,7 @@
-from language.detect import detect
-
+import repository_context
 
 def deploy(project_name: str) -> None:
     print(f"Deploying {project_name}...")
-    language = detect()
-    print(f"Detected language: {language.name}")
+    ctx = repository_context.get()
+    print(f"Detected language: {ctx.language.name}")
+    print(f"Standalone: {ctx.standalone}")

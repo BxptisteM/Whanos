@@ -1,4 +1,4 @@
-from language.language_enum import Language
+from repository_context.language_enum import Language
 from typing import Dict
 from pathlib import Path
 
@@ -11,8 +11,12 @@ DETECTION_CRITERIAS: Dict[str, Language] = {
 }
 
 
-def detect() -> Language:
+def detect_language() -> Language:
     for file, language in DETECTION_CRITERIAS.items():
         if Path(file).exists():
             return language
     raise Exception("Could not detect language")
+
+
+def detect_standalone() -> bool:
+    return not Path("Dockerfile").exists()

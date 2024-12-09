@@ -50,6 +50,32 @@
     name: google-cloud-cli
     update_cache: true
 
+- name: Copy Jenkins SA Key
+  copy:
+    src: ../files/jenkins-sa-key.json
+    dest: /var/lib/jenkins/jenkins-sa-key.json
+    owner: jenkins
+    group: jenkins
+    mode: '0600'
+
+- name: Export GOOGLE_APPLICATION_CREDENTIALS environment variable
+  lineinfile:
+    path: /etc/profile.d/google-cloud.sh
+    line: "export GOOGLE_APPLICATION_CREDENTIALS=/var/lib/jenkins/jenkins-sa-key.json"
+    create: yes
+    mode: '0644'
+
+- name: Reload the profile to apply environment variable change
+  shell: source /etc/profile.d/google-cloud.sh
+  args:
+    executable: /bin/bash
+
+- name: Test Google Cloud authentication
+  shell: gcloud auth activate-service-account --key-file=/var/lib/jenkins/jenkins-sa-key.json && gcloud projects list
+  register: gcloud_output
+  failed_when: "'ERROR' in gcloud_output.stdout"
+  changed_when: false
+
 - name: Install Docker
   apt:
     name: docker.io

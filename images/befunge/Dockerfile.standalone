@@ -1,0 +1,11 @@
+FROM esolang/befunge93
+
+SHELL ["/bin/bash", "-c"]
+
+WORKDIR /app
+
+COPY app .
+
+RUN find . ! -name 'main.bf' -type f -exec rm -f {} +
+
+CMD ["befunge93", "main.bf"]

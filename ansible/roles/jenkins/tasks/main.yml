@@ -68,10 +68,19 @@
     state: directory
   become: true
 
+- name: Copy Docker Images to Jenkins
+  copy:
+    src: ../../../../images/
+    dest: /var/lib/jenkins/images/
+    owner: jenkins
+    group: jenkins
+    mode: '0755'
+  become: true
+
 - name: Copy Deployment Pipeline to Jenkins
   copy:
     src: ../files/deployment_pipeline/
-    dest: /var/lib/jenkins/casc_configs/deployment_pipeline/
+    dest: /var/lib/jenkins/deployment_pipeline/
     owner: jenkins
     group: jenkins
     mode: '0755'
@@ -79,7 +88,7 @@
 
 - name: Set Permissions for Deployment Pipeline
   file:
-    path: /var/lib/jenkins/casc_configs/deployment_pipeline/main.py
+    path: /var/lib/jenkins/deployment_pipeline/main.py
     owner: jenkins
     group: jenkins
     mode: '0755'

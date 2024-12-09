@@ -1,0 +1,8 @@
+{
+    "name": "befunge-hello-world",
+    "version": "1.0.0",
+    "main": "interpreter.js",
+    "dependencies": {
+      "befunge93": "^1.0.0"
+    }
+}

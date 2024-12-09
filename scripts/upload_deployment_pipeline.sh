@@ -16,7 +16,7 @@ fi
 
 TERRAFORM_DIR="terraform/master"
 ANSIBLE_DIR="ansible/roles/jenkins/files/deployment_pipeline"
-REMOTE_PATH="/var/lib/jenkins/casc_configs/deployment_pipeline"
+REMOTE_PATH="/var/lib/jenkins/deployment_pipeline"
 
 echo "Navigating to Terraform directory: $TERRAFORM_DIR"
 cd "$TERRAFORM_DIR" || { echo "Directory not found: $TERRAFORM_DIR"; exit 1; }

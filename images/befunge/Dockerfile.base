@@ -2,10 +2,8 @@ FROM esolang/befunge93
 
 SHELL ["/bin/bash", "-c"]
 
-ONBUILD WORKDIR /app
+ONBUILD WORKDIR /
 
-ONBUILD COPY app .
-
-ONBUILD RUN find . ! -name 'main.bf' -type f -exec rm -f {} +
+ONBUILD COPY app/main.bf .
 
 ONBUILD CMD ["befunge93", "main.bf"]

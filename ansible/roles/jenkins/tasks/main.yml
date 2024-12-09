@@ -35,10 +35,26 @@
     mode: '0644'
     force: no
 
-- name: Update package cache
+- name: Import the Google Cloud Platform public key
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+
+- name: Add the Cloud SDK distribution URI as a package source
+  apt_repository:
+    repo: 'deb https://packages.cloud.google.com/apt cloud-sdk main'
+    state: present
+
+- name: Install the Google Cloud CLI
   apt:
+    name: google-cloud-cli
+    update_cache: true
+
+- name: Install Docker
+  apt:
+    name: docker.io
+    state: present
     update_cache: yes
-    cache_valid_time: 86400
 
 - name: Create directory for Jenkins override configuration
   become: true

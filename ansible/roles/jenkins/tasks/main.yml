@@ -82,6 +82,12 @@
     state: present
     update_cache: yes
 
+- name: Add Jenkins user to Docker group
+  user:
+    name: jenkins
+    groups: docker
+    append: yes
+
 - name: Create directory for Jenkins override configuration
   become: true
   file:

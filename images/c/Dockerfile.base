@@ -10,4 +10,4 @@ ONBUILD RUN make
 
 ONBUILD RUN find . ! -name 'compiled-app' -type f -exec rm -f {} +
 
-ONBUILD CMD [ "./compiled-app" ] 
+ONBUILD CMD [ "./compiled-app" ]

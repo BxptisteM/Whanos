@@ -1,9 +1,15 @@
-FROM esolang/befunge93
+FROM node:latest
 
 SHELL ["/bin/bash", "-c"]
 
-WORKDIR /
+WORKDIR /app
 
-COPY app/main.bf .
+COPY interpreter/package.json ./
+COPY interpreter/interpreter.js ./
+COPY app/main.bf ./main.bf
 
-CMD ["befunge93", "main.bf"]
+RUN apt-get update && apt-get install -y npm
+
+RUN npm install
+
+CMD ["node", "interpreter.js", "main.bf"]

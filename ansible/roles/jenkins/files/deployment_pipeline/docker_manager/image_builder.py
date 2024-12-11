@@ -11,7 +11,7 @@ def build_standalone_image(
     print(f"Building standalone image for {project_name}...")
     image_path = os.path.join(IMAGES_DIR, ctx.language.value, "Dockerfile.standalone")
     print(f"Dockerfile path: {image_path}")
-    image_name = f"{base_image_name}-{project_name}:latest"
+    image_name = f"{base_image_name}-{project_name}"
     print(f"Image name: {image_name}")
     subprocess.run(
         [

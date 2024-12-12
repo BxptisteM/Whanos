@@ -83,9 +83,12 @@
     repo: 'deb https://packages.cloud.google.com/apt cloud-sdk main'
     state: present
 
-- name: Install the Google Cloud CLI
+- name: Install packages needed for gcloud CLI
   apt:
-    name: google-cloud-cli
+    name:
+      - google-cloud-cli
+      - google-cloud-cli-gke-gcloud-auth-plugin
+      - google-cloud-cli-kubectl-oidc
     update_cache: true
 
 - name: Export GOOGLE_APPLICATION_CREDENTIALS environment variable

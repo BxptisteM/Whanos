@@ -1,8 +1,13 @@
 import subprocess
+import os
+
+
+CLUSTER_NAME = os.getenv("CLUSTER_NAME")
+CLUSTER_REGION = os.getenv("CLUSTER_REGION")
 
 
 def gcloud_auth() -> None:
-    print("Authenticating with GCP...")
+    print("Authenticating with GCP and configuring...")
     subprocess.run(
         [
             "gcloud",
@@ -20,5 +25,16 @@ def gcloud_auth() -> None:
             "configure-docker",
             "europe-west1-docker.pkg.dev",
             "--quiet",
+        ]
+    )
+    subprocess.run(
+        [
+            "gcloud",
+            "container",
+            "clusters",
+            "get-credentials",
+            CLUSTER_NAME,
+            "--region",
+            CLUSTER_REGION,
         ]
     )

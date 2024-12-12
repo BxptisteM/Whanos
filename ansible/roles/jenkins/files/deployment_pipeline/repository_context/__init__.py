@@ -1,1 +1,1 @@
-from .context import get
+from .context import get # noqa

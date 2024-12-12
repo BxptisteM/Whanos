@@ -1,5 +1,6 @@
 import subprocess
 
+
 def gcloud_auth() -> None:
     print("Authenticating with GCP...")
     subprocess.run(
@@ -21,5 +22,3 @@ def gcloud_auth() -> None:
             "--quiet",
         ]
     )
-    
-    

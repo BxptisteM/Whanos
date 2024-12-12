@@ -7,5 +7,6 @@ def get_base_image_name(ctx: Context) -> str:
 
 
 def run(ctx: Context) -> None:
+    print("DOCKER MANAGER", "=" * 60)
     base_image_name = get_base_image_name(ctx)
     docker_image_build(ctx, base_image_name)

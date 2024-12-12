@@ -7,8 +7,8 @@ CLUSTER_REGION = os.getenv("CLUSTER_REGION")
 
 
 def gcloud_auth() -> None:
-    print("Authenticating with GCP and configuring...")
-    subprocess.run(
+    print("GCLOUD AUTH", "=" * 60)
+    res = subprocess.run(
         [
             "gcloud",
             "auth",
@@ -17,17 +17,23 @@ def gcloud_auth() -> None:
             "/var/lib/jenkins/jenkins-sa-key.json",
         ],
         check=True,
+        capture_output=True,
+        text=True,
     )
-    subprocess.run(
+    print(res.stdout)
+    res = subprocess.run(
         [
             "gcloud",
             "auth",
             "configure-docker",
             "europe-west1-docker.pkg.dev",
             "--quiet",
-        ]
+        ],
+        capture_output=True,
+        text=True,
     )
-    subprocess.run(
+    print(res.stdout)
+    res = subprocess.run(
         [
             "gcloud",
             "container",
@@ -36,5 +42,8 @@ def gcloud_auth() -> None:
             CLUSTER_NAME,
             "--region",
             CLUSTER_REGION,
-        ]
+        ],
+        capture_output=True,
+        text=True,
     )
+    print(res.stdout)

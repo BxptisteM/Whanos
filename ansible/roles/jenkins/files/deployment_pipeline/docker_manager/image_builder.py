@@ -12,7 +12,7 @@ def build_standalone_image(ctx: Context, base_image_name: str) -> str:
     print(f"Dockerfile path: {image_path}")
     image_name = f"{base_image_name}-{ctx.project_name}"
     print(f"Image name: {image_name}")
-    subprocess.run(
+    res = subprocess.run(
         [
             "docker",
             "build",
@@ -21,8 +21,11 @@ def build_standalone_image(ctx: Context, base_image_name: str) -> str:
             "-f",
             image_path,
             ".",
-        ]
+        ],
+        capture_output=True,
+        text=True,
     )
+    print(res.stdout)
     return image_name
 
 
@@ -39,7 +42,8 @@ def tag_image(image_name: str, tag: str) -> None:
         image_name,
         tag,
     ]
-    subprocess.run(command)
+    res = subprocess.run(command, capture_output=True, text=True)
+    print(res.stdout)
     return None
 
 
@@ -50,7 +54,8 @@ def push_image(tag: str) -> None:
         "push",
         tag,
     ]
-    subprocess.run(command)
+    result = subprocess.run(command, capture_output=True, text=True)
+    print(result.stdout)
     return None
 
 

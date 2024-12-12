@@ -145,12 +145,6 @@
     group: jenkins
     mode: '0600'
 
-- name: Authenticate with Google Cloud
-  shell: |
-    gcloud auth activate-service-account --key-file=/var/lib/jenkins/jenkins-sa-key.json
-    gcloud auth configure-docker europe-west1-docker.pkg.dev --quiet
-  changed_when: false
-
 - name: Load environment variables from .env file
   set_fact:
     jenkins_admin_password: "{{ lookup('ansible.builtin.env', 'JENKINS_ADMIN_PASSWORD') | default('') }}"
@@ -201,4 +195,4 @@
   become: true
   user:
     name: jenkins
-    shell: /bin/zsh
+    shell: /bin/bash

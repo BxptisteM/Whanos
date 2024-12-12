@@ -24,6 +24,10 @@ resource "google_container_cluster" "primary" {
   network    = var.vpc_name
   subnetwork = var.subnet_name
 
+  node_config {
+    disk_size_gb = 50
+  }
+
   release_channel {
     channel = "STABLE"
   }
@@ -41,7 +45,7 @@ resource "google_container_node_pool" "primary_nodes" {
       "https://www.googleapis.com/auth/logging.write",
       "https://www.googleapis.com/auth/monitoring",
     ]
-    disk_size_gb = 50
+    disk_size_gb = 20
     labels = {
       env = var.project_id
     }

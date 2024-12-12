@@ -1,21 +1,14 @@
 from termcolor import colored
-from pathlib import Path
 import subprocess
+from cli.utils.cluster_output import get_cluster_name, get_cluster_region
 
 
 def configure_kubectl():
     print(colored("Configuring kubectl to connect to the cluster...", "cyan"))
-    terraform_dir = Path("terraform/cluster")
     try:
-        kubernetes_cluster_name = subprocess.check_output(
-            ["terraform", "output", "-raw", "kubernetes_cluster_name"],
-            text=True,
-            cwd=terraform_dir,
-        ).strip()
+        kubernetes_cluster_name = get_cluster_name()
 
-        region = subprocess.check_output(
-            ["terraform", "output", "-raw", "region"], text=True, cwd=terraform_dir
-        ).strip()
+        region = get_cluster_region()
 
         gcloud_command = [
             "gcloud",

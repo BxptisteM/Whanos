@@ -17,3 +17,9 @@ if __name__ == "__main__":
         jenkins()
     if args.registry:
         registry()
+    if args.all:
+        install()
+        server_init()
+        cluster()
+        registry()
+        jenkins()

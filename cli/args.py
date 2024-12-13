@@ -41,4 +41,10 @@ def get_args() -> argparse.Namespace:
         default=False,
         action="store_true",
     )
+    parser.add_argument(
+        "--all",
+        help="Setup the entire infrastructure",
+        default=False,
+        action="store_true",
+    )
     return parser.parse_args()

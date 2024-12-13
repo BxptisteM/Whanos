@@ -46,10 +46,10 @@ freeStyleJob('link-project') {
                         }
                     }
                     triggers {
-                        scm('H/1 * * * *')
+                        scm('* * * * *')
                     }
                     steps {
-                        shell('ls -la')
+                        shell("/var/lib/jenkins/deployment_pipeline/main.py --project ${projectName}")
                     }
                 }
             '''.stripIndent())

@@ -1,13 +1,21 @@
 ---
 # tasks file for all the machines
 
+- name: Update apt cache
+  become: true
+  ansible.builtin.apt:
+    update_cache: yes
+
 - name: Install necessary packages
   become: true
   ansible.builtin.apt:
     pkg:
     - git
     - python3
-    - docker.io
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - gnupg
 
 - name: Set timezone to Europe/Paris
   become: true

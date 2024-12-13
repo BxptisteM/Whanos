@@ -8,6 +8,6 @@ COPY . .
 
 RUN make
 
-RUN find . ! -name 'compiled-app' -type f -exec rm -f {} +
+RUN rm -rf *.o
 
-CMD [ "./compiled-app" ] 
+CMD [ "./compiled-app" ]

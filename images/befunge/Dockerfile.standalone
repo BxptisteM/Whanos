@@ -4,12 +4,9 @@ SHELL ["/bin/bash", "-c"]
 
 WORKDIR /app
 
-COPY interpreter/package.json ./
-COPY interpreter/interpreter.js ./
 COPY app/main.bf ./main.bf
 
 RUN apt-get update && apt-get install -y npm
+RUN npm install -g befunge-interpreter
 
-RUN npm install
-
-CMD ["node", "interpreter.js", "main.bf"]
+CMD ["befunge-interpreter", "main.bf"]

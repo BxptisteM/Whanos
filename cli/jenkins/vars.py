@@ -1,7 +1,7 @@
 from pathlib import Path
 
 
-def add_jenkins_url_var(vm_ip: str) -> None:
+def jenkins_var(key: str, value: str) -> None:
     ansible_dir = Path("ansible")
     group_vars_file = ansible_dir / "group_vars/jenkins.yml"
 
@@ -14,11 +14,11 @@ def add_jenkins_url_var(vm_ip: str) -> None:
     else:
         lines = []
 
-    new_var_line = f'jenkins_vm_ip: "{vm_ip}"\n'
+    new_var_line = f'{key}: "{value}"\n'
 
     updated = False
     for i, line in enumerate(lines):
-        if line.startswith("jenkins_vm_ip:"):
+        if line.startswith(key):
             lines[i] = new_var_line
             updated = True
             break

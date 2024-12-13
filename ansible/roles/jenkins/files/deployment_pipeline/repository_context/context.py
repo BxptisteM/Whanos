@@ -5,6 +5,8 @@ from repository_context.detect import (
     detect_standalone,
     detect_deployable,
 )
+from repository_context.deployment_props import DeploymentProps, parse_deployment_props
+from typing import Optional
 
 
 @dataclass
@@ -13,6 +15,7 @@ class Context:
     language: Language | None = None
     deployable: bool = False
     project_name: str = "whanos"
+    deployment_props: Optional[DeploymentProps] = None
 
 
 def get(project_name: str) -> Context:
@@ -21,4 +24,6 @@ def get(project_name: str) -> Context:
     ctx.standalone = detect_standalone()
     ctx.deployable = detect_deployable()
     ctx.project_name = project_name
+    if ctx.deployable:
+        ctx.deployment_props = parse_deployment_props()
     return ctx

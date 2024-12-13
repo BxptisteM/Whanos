@@ -1,0 +1,15 @@
+{
+  "name": "befunge-interpreter",
+  "author": {
+    "name": "BxptisteM"
+  },
+  "version": "1.0.0",
+  "description": "A Befunge-93 interpreter CLI",
+  "main": "interpreter.js",
+  "bin": {
+    "befunge-interpreter": "interpreter.js"
+  },
+  "dependencies": {
+    "befunge93": "^1.0.0"
+  }
+}

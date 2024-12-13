@@ -6,15 +6,13 @@ IMAGES_DIR = "/var/lib/jenkins/images"
 REGISTRY_URI = os.getenv("REGISTRY_URI")
 
 
-def build_standalone_image(
-    ctx: Context, base_image_name: str, project_name: str
-) -> str:
-    print(f"Building standalone image for {project_name}...")
+def build_standalone_image(ctx: Context, base_image_name: str) -> str:
+    print(f"Building standalone image for {ctx.project_name}...")
     image_path = os.path.join(IMAGES_DIR, ctx.language.value, "Dockerfile.standalone")
     print(f"Dockerfile path: {image_path}")
-    image_name = f"{base_image_name}-{project_name}"
+    image_name = f"{base_image_name}-{ctx.project_name}"
     print(f"Image name: {image_name}")
-    subprocess.run(
+    res = subprocess.run(
         [
             "docker",
             "build",
@@ -23,8 +21,11 @@ def build_standalone_image(
             "-f",
             image_path,
             ".",
-        ]
+        ],
+        capture_output=True,
+        text=True,
     )
+    print(res.stdout)
     return image_name
 
 
@@ -41,7 +42,8 @@ def tag_image(image_name: str, tag: str) -> None:
         image_name,
         tag,
     ]
-    subprocess.run(command)
+    res = subprocess.run(command, capture_output=True, text=True)
+    print(res.stdout)
     return None
 
 
@@ -52,14 +54,15 @@ def push_image(tag: str) -> None:
         "push",
         tag,
     ]
-    subprocess.run(command)
+    result = subprocess.run(command, capture_output=True, text=True)
+    print(result.stdout)
     return None
 
 
-def docker_image_build(ctx: Context, base_image_name: str, project_name: str) -> None:
+def docker_image_build(ctx: Context, base_image_name: str) -> None:
     final_image_name = ""
     if ctx.standalone:
-        final_image_name = build_standalone_image(ctx, base_image_name, project_name)
+        final_image_name = build_standalone_image(ctx, base_image_name)
     else:
         final_image_name = build_base_image(ctx, base_image_name)
     tag = f"{REGISTRY_URI}/{final_image_name}"

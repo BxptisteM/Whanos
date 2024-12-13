@@ -35,6 +35,44 @@
     mode: '0644'
     force: no
 
+- name: Add Kubernetes APT repository key
+  block:
+  - name: Download Kubernetes repository GPG key
+    ansible.builtin.get_url:
+      url: https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key
+      dest: /tmp/kubernetes-release.key
+      mode: '0644'
+
+  - name: Dearmor GPG key
+    ansible.builtin.shell:
+      cmd: gpg --dearmor < /tmp/kubernetes-release.key > /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+    args:
+      creates: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+  - name: Set correct permissions on keyring
+    ansible.builtin.file:
+      path: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+      mode: '0644'
+      owner: root
+      group: root
+  become: true
+
+- name: Add Kubernetes APT repository
+  block:
+  - name: Configure Kubernetes repository source list
+    ansible.builtin.copy:
+      content: 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /'
+      dest: /etc/apt/sources.list.d/kubernetes.list
+      owner: root
+      group: root
+      mode: '0644'
+  become: true
+
+- name: Install kubectl
+  apt:
+    name: kubectl
+    update_cache: true
+
 - name: Import the Google Cloud Platform public key
   apt_key:
     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
@@ -45,9 +83,12 @@
     repo: 'deb https://packages.cloud.google.com/apt cloud-sdk main'
     state: present
 
-- name: Install the Google Cloud CLI
+- name: Install packages needed for gcloud CLI
   apt:
-    name: google-cloud-cli
+    name:
+      - google-cloud-cli
+      - google-cloud-cli-gke-gcloud-auth-plugin
+      - google-cloud-cli-kubectl-oidc
     update_cache: true
 
 - name: Export GOOGLE_APPLICATION_CREDENTIALS environment variable

@@ -20,3 +20,7 @@ def detect_language() -> Language:
 
 def detect_standalone() -> bool:
     return not Path("Dockerfile").exists()
+
+
+def detect_deployable() -> bool:
+    return Path("whanos.yml").exists()

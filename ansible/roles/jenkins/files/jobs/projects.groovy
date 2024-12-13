@@ -46,7 +46,7 @@ freeStyleJob('link-project') {
                         }
                     }
                     triggers {
-                        scm('H/1 * * * *')
+                        scm('* * * * *')
                     }
                     steps {
                         shell("/var/lib/jenkins/deployment_pipeline/main.py --project ${projectName}")

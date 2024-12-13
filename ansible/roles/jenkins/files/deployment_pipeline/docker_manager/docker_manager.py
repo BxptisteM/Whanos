@@ -6,6 +6,7 @@ def get_base_image_name(ctx: Context) -> str:
     return f"whanos-{ctx.language.value}"
 
 
-def run(ctx: Context, project_name: str) -> None:
+def run(ctx: Context) -> None:
+    print("DOCKER MANAGER", "=" * 60)
     base_image_name = get_base_image_name(ctx)
-    docker_image_build(ctx, base_image_name, project_name)
+    docker_image_build(ctx, base_image_name)

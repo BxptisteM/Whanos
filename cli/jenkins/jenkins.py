@@ -25,8 +25,8 @@ def jenkins():
     jenkins_var("jenkins_vm_ip", vm_ip)
     jenkins_var("project_id", project_id)
     jenkins_var("registry_uri", registry_uri)
-    jenkins_var("cluster_name", cluster_name)
-    jenkins_var("cluster_region", cluster_region)
+    jenkins_var("cluster_name", "clean-evening-442413-k4-gke")
+    jenkins_var("cluster_region", "europe-west1")
     run_playbook()
 
 

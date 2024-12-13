@@ -9,11 +9,11 @@ freeStyleJob('Whanos base images/Build all base images') {
     steps {
         shell("""
             echo "Building all base images"
-            docker build -t whanos-c ./whanos-c
-            docker build -t whanos-python ./whanos-python
-            docker build -t whanos-java ./whanos-java
-            docker build -t whanos-javascript ./whanos-javascript
-            docker build -t whanos-befunge ./whanos-befunge
+            docker build -t whanos-c < /whanos-c/Dockerfile.base
+            docker build -t whanos-python < /whanos-python/Dockerfile.base
+            docker build -t whanos-java < /whanos-java/Dockerfile.base
+            docker build -t whanos-javascript < /whanos-javascript/Dockerfile.base
+            docker build -t whanos-befunge < /whanos-befunge/Dockerfile.base
         """)
     }
 }
@@ -24,7 +24,7 @@ whanosLanguages.each { language ->
         steps {
             shell("""
                 echo "Building ${language} base image"
-                docker build -t whanos-${language}: ./whanos-${language}
+                docker build -t whanos-${language} < /whanos-${language}/Dockerfile.base
             """)
         }
     }

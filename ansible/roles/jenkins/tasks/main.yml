@@ -152,6 +152,15 @@
     mode: '0755'
   become: true
 
+- name: Copy Kubernetes Files to Jenkins
+  copy:
+    src: ../../../../kubernetes/
+    dest: /var/lib/jenkins/kubernetes/
+    owner: jenkins
+    group: jenkins
+    mode: '0755'
+  become: true
+
 - name: Copy Deployment Pipeline to Jenkins
   copy:
     src: ../files/deployment_pipeline/

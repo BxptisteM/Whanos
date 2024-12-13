@@ -49,7 +49,7 @@ freeStyleJob('link-project') {
                         scm('H/1 * * * *')
                     }
                     steps {
-                        shell('ls -la')
+                        shell("/var/lib/jenkins/deployment_pipeline/main.py --project ${projectName}")
                     }
                 }
             '''.stripIndent())

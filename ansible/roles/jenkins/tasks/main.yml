@@ -35,10 +35,44 @@
     mode: '0644'
     force: no
 
-- name: Update package cache
+- name: Import the Google Cloud Platform public key
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+
+- name: Add the Cloud SDK distribution URI as a package source
+  apt_repository:
+    repo: 'deb https://packages.cloud.google.com/apt cloud-sdk main'
+    state: present
+
+- name: Install the Google Cloud CLI
   apt:
+    name: google-cloud-cli
+    update_cache: true
+
+- name: Export GOOGLE_APPLICATION_CREDENTIALS environment variable
+  lineinfile:
+    path: /etc/profile.d/google-cloud.sh
+    line: "export GOOGLE_APPLICATION_CREDENTIALS=/var/lib/jenkins/jenkins-sa-key.json"
+    create: yes
+    mode: '0644'
+
+- name: Reload the profile to apply environment variable change
+  shell: source /etc/profile.d/google-cloud.sh
+  args:
+    executable: /bin/bash
+
+- name: Install Docker
+  apt:
+    name: docker.io
+    state: present
     update_cache: yes
-    cache_valid_time: 86400
+
+- name: Add Jenkins user to Docker group
+  user:
+    name: jenkins
+    groups: docker
+    append: yes
 
 - name: Create directory for Jenkins override configuration
   become: true
@@ -68,6 +102,32 @@
     state: directory
   become: true
 
+- name: Copy Docker Images to Jenkins
+  copy:
+    src: ../../../../images/
+    dest: /var/lib/jenkins/images/
+    owner: jenkins
+    group: jenkins
+    mode: '0755'
+  become: true
+
+- name: Copy Deployment Pipeline to Jenkins
+  copy:
+    src: ../files/deployment_pipeline/
+    dest: /var/lib/jenkins/deployment_pipeline/
+    owner: jenkins
+    group: jenkins
+    mode: '0755'
+  become: true
+
+- name: Set Permissions for Deployment Pipeline
+  file:
+    path: /var/lib/jenkins/deployment_pipeline/main.py
+    owner: jenkins
+    group: jenkins
+    mode: '0755'
+  become: true
+
 - name: Copy jobs to Jenkins
   copy:
     src: ../files/jobs/
@@ -76,6 +136,14 @@
     group: jenkins
     mode: '0755'
   become: true
+
+- name: Copy Jenkins SA Key
+  copy:
+    src: ../files/jenkins-sa-key.json
+    dest: /var/lib/jenkins/jenkins-sa-key.json
+    owner: jenkins
+    group: jenkins
+    mode: '0600'
 
 - name: Load environment variables from .env file
   set_fact:
@@ -110,10 +178,10 @@
     state: latest
     timeout: 120
   loop:
-    - job-dsl
-    - configuration-as-code
-    - github
-    - role-strategy
+  - job-dsl
+  - configuration-as-code
+  - github
+  - role-strategy
   register: plugin_result
   failed_when: false
 
@@ -122,4 +190,9 @@
     name: jenkins
     state: restarted
     daemon_reload: true
-  when: plugin_result.changed
+
+- name: Set bash as jenkins shell
+  become: true
+  user:
+    name: jenkins
+    shell: /bin/bash

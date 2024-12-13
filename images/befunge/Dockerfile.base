@@ -4,12 +4,9 @@ SHELL ["/bin/bash", "-c"]
 
 ONBUILD WORKDIR /app
 
-ONBUILD COPY interpreter/package.json ./
-ONBUILD COPY interpreter/interpreter.js ./
 ONBUILD COPY app/main.bf ./main.bf
 
 ONBUILD RUN apt-get update && apt-get install -y npm
+ONBUILD RUN npm install -g befunge-interpreter
 
-ONBUILD RUN npm install
-
-ONBUILD CMD ["node", "interpreter.js", "main.bf"]
+ONBUILD CMD ["befunge-interpreter", "main.bf"]

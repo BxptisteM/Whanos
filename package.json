@@ -6,6 +6,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "befunge-interpreter": "^1.0.0",
     "befunge93": "^1.0.5",
     "fs": "^0.0.1-security"
   }

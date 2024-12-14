@@ -1,0 +1,15 @@
+deployment:
+  replicas: 2
+  resources:
+    limits:
+      memory: "128M"
+      cpu: "0.1"
+    requests:
+      memory: "64M"
+      cpu: "0.1"
+  ports:
+    - 3000
+
+image:
+  name: whanos
+  uri: "europe-west1-docker.pkg.dev/clean-evening-442413-k4/clean-evening-442413-k4-docker-repository/whanos-c-whanos_test:latest"

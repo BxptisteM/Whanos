@@ -33,3 +33,16 @@ resource "google_compute_firewall" "vpc_firewall_http" {
     ports    = ["8080"]
   }
 }
+
+resource "google_compute_firewall" "vpc_firewall_outbound" {
+  name    = "allow-outbound"
+  network = google_compute_network.vpc.name
+
+  allow {
+    protocol = "tcp"
+    ports    = ["443"]
+  }
+
+  destination_ranges = ["0.0.0.0/0"]
+  direction          = "EGRESS"
+}

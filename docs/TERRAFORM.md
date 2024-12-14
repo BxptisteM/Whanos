@@ -1,4 +1,3 @@
-
 # Terraform Configuration Documentation
 
 This document provides an overview of how Terraform is used to provision and configure a virtual machine (VM) in Google Cloud Platform (GCP) as part of the Whanos project.

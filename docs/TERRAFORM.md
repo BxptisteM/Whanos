@@ -85,9 +85,9 @@ The **server_init** Python script automates several steps in the Terraform workf
    - Define `SSH_PUBLIC_KEY_PATH` and `SSH_USERNAME` in the `.env` file.
 
 2. **Run the Python Script:**
-   Execute the `server_init.py` script:
+   Execute the `werserk.py --setup` script:
    ```bash
-   python3 scripts/server_init.py
+   python3 werserk.py --setup
    ```
 
 3. **Follow Authentication Steps:**

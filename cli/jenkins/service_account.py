@@ -71,6 +71,7 @@ def assign_container_registry_role():
     subprocess.run(command, check=True)
     subprocess.run(command2, check=True)
 
+
 def create_service_account_key():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 

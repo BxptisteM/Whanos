@@ -16,8 +16,8 @@ def jenkins():
     user_vars = get_user_variables()
     project_id = get_project_id()
     registry_uri = get_docker_uri()
-    cluster_name = get_cluster_name()
-    cluster_region = get_cluster_region()
+    # cluster_name = get_cluster_name()
+    # cluster_region = get_cluster_region()
     jenkins_generate_inventory(
         vm_ip, user_vars["ssh_username"], user_vars["private_key_path"]
     )

@@ -56,10 +56,20 @@ def assign_container_registry_role():
         f"serviceAccount:{SERVICE_ACCOUNT_NAME}@{PROJECT_ID}.iam.gserviceaccount.com",
         "--role",
         "roles/artifactregistry.writer",
-        "roles/artifactregistry.reader"
+    ]
+    command2 = [
+        "gcloud",
+        "projects",
+        "add-iam-policy-binding",
+        PROJECT_ID,
+        "--member",
+        f"serviceAccount:{SERVICE_ACCOUNT_NAME}@{PROJECT_ID}.iam.gserviceaccount.com",
+        "--role",
+        "roles/artifactregistry.reader",
     ]
     print("Assigning Container Registry role...")
     subprocess.run(command, check=True)
+    subprocess.run(command2, check=True)
 
 
 def create_service_account_key():

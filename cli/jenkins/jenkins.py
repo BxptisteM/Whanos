@@ -6,7 +6,7 @@ from cli.utils.project_id import get_project_id
 from cli.utils.user_vars import get_user_variables
 from cli.jenkins.vars import jenkins_var
 from cli.jenkins.service_account import service_account
-from cli.utils.cluster_output import get_cluster_name, get_cluster_region
+# from cli.utils.cluster_output import get_cluster_name, get_cluster_region
 import subprocess
 
 

@@ -74,8 +74,9 @@ All the detailed developper documentation can be found in the [Documentation](/d
 ### Prerequisites
 
 - SSH key-pair for accessing your infrastructure.
-- Python3, Pip, Ansible installed locally
-- A valid GCP account
+- Python3, Pip, Ansible installed locally.
+- A valid GCP account.
+- A valid `whanos.yml` file see `whanos.template.yml` for more details.
 
 ### Commands
 

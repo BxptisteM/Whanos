@@ -41,39 +41,6 @@ This project leverages a robust DevOps stack:
 - **GoogleCloud Registry**: Docker image registry ![Docker Logo](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)
 - **Helm**: Kubernetes application deployment and updates ![Helm Logo](https://img.shields.io/badge/Helm-0F1689?logo=helm&logoColor=white)
 
----
-
-## 📂 Repository Structure
-
-```
-/images
-    -> /javascript
-    -> /c
-    -> /befunge
-    -> /java
-    -> /python
-/docs
-    -> /assets
-        -> /banner.png
-    -> TERRAFORM.md
-/k8s
-/jenkins
-    -> /jobs
-    -> /config
-/ansible
-    -> /roles
-    -> /playbooks
-    -> /inventory
-/terraform
-    -> /template
-        -> terraform.tfvars.j2
-    -> main.tf
-/scripts
-server_init.py
-.env.example
-.gitignore
-README.md
-```
 
 ---
 

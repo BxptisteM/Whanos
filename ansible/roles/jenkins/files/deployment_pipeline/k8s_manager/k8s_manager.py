@@ -58,7 +58,7 @@ def run_deployment(ctx: Context) -> None:
         ]
     else:
         print("Existing release found. Updating deployment...", flush=True)
-        
+
         command_helm = [
             "helm",
             "upgrade",

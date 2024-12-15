@@ -4,16 +4,16 @@ To explain the deployment process in detail, we will go step by step.
 
 Before you start, it's important to understand the components of the infrastructure and the requirements for the project. Please review the following documentation files:
 
-- [INFRASTRUCTURE.md](docs/INFRASTRUCTURE.md) – To understand the components of the infrastructure.
-- [REQUIREMENTS.md](docs/REQUIREMENTS.md) – To review the project requirements.
-- [CLI.md](docs/CLI.md) – To understand how the CLI tool works.
+- [INFRASTRUCTURE.md](INFRASTRUCTURE.md) – To understand the components of the infrastructure.
+- [REQUIREMENTS.md](REQUIREMENTS.md) – To review the project requirements.
+- [CLI.md](CLI.md) – To understand how the CLI tool works.
 
 ---
 
 ## Step-by-Step Deployment Process
 
 ### 1. Install Requirements
-Start by installing all the dependencies listed in the [REQUIREMENTS.md](docs/REQUIREMENTS.md) file.
+Start by installing all the dependencies listed in the [REQUIREMENTS.md](REQUIREMENTS.md) file.
 
 ### 2. Configure Environment Variables
 Next, configure your environment variables by referencing the `.env.example` file. This file will provide the necessary template for your configuration.
@@ -28,7 +28,7 @@ python3 werserk.py --all
 ### 4. Create Deployment Configuration
 After the infrastructure is deployed, go to your project directory and create a `whanos.yml` file in the root of your project. This file will define the deployment configuration.
 
-You can reference the [whanos.template.yml](whanos.template.yml) file to see the expected structure of the `whanos.yml` file.
+You can reference the [whanos.template.yml](../whanos.template.yml) file to see the expected structure of the `whanos.yml` file.
 
 ### 5. Set Up Jenkins Pipeline
 Next, log into your Jenkins interface and link your repository to the Jenkins pipeline by using the "Link Project" job. This setup ensures that the pipeline will be triggered automatically whenever you push to your repository.

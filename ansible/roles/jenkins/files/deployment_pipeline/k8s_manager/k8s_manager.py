@@ -17,10 +17,16 @@ image:
 
 
 def check_if_deployment_exists(ctx: Context) -> bool:
-    cmd = ["kubectl", "get", "deployment", "--namespace", ctx.project_name.replace("_", "-")]
+    cmd = [
+        "kubectl",
+        "get",
+        "deployment",
+        "--namespace",
+        ctx.project_name.replace("_", "-"),
+    ]
     try:
         result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-        return result.stdout.split("\n")[1].strip() != ""
+        return result.stdout.split("\n").__len__() > 1
     except subprocess.CalledProcessError as e:
         print(f"Error checking for existing release: {e}", flush=True)
         raise
@@ -48,6 +54,19 @@ def run_deployment(ctx: Context) -> None:
         ]
     else:
         print("Existing release found. Updating deployment...", flush=True)
+        
+        command_helm = [
+            "helm",
+            "upgrade",
+            release_name,
+            CHART_FILEPATH,
+            "-f",
+            default_val_file,
+            "-f",
+            "whanos.yml",
+            "--namespace",
+            namespace,
+        ]
 
         command = [
             "kubectl",
@@ -59,6 +78,7 @@ def run_deployment(ctx: Context) -> None:
         ]
 
         try:
+            subprocess.run(command_helm, check=True, capture_output=True, text=True)
             subprocess.run(command, check=True, capture_output=True, text=True)
             print("Deployment updated successfully", flush=True)
             return
@@ -70,7 +90,6 @@ def run_deployment(ctx: Context) -> None:
     try:
         result = subprocess.run(command, capture_output=True, text=True, check=True)
         print(f"Command output: {result.stdout}", flush=True)
-        print(f"Command errors: {result.stderr}", flush=True)
     except subprocess.CalledProcessError as e:
         print(f"Helm command failed with return code {e.returncode}", flush=True)
         print(f"Error output: {e.stderr}", flush=True)

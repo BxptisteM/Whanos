@@ -9,8 +9,10 @@ spec:
   selector:
     app: {{ .Release.Name }}
   ports:
-    {{- range .Values.deployment.ports }}
-    - port: {{ . }}
-      targetPort: {{ . }}
+    {{- range $index, $port := .Values.deployment.ports }}
+    - name: port-{{ $port }}
+      port: {{ $port }}
+      targetPort: {{ $port }}
+      protocol: TCP
     {{- end }}
 {{- end }}

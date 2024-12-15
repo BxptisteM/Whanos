@@ -59,7 +59,7 @@ def push_image(tag: str) -> None:
     return None
 
 
-def docker_image_build(ctx: Context, base_image_name: str) -> None:
+def docker_image_build(ctx: Context, base_image_name: str) -> str:
     final_image_name = ""
     if ctx.standalone:
         final_image_name = build_standalone_image(ctx, base_image_name)
@@ -69,4 +69,4 @@ def docker_image_build(ctx: Context, base_image_name: str) -> None:
 
     tag_image(final_image_name, tag)
     push_image(tag)
-    return None
+    return final_image_name

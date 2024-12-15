@@ -1,16 +1,4 @@
 deployment:
-  replicas: 2
-  resources:
-    limits:
-      memory: "128M"
-      cpu: "0.1"
-    requests:
-      memory: "64M"
-      cpu: "0.1"
-  ports:
-    - 8080
-    - 3000
-
-image:
-  name: python-project
-  uri: europe-west1-docker.pkg.dev/clean-evening-442413-k4/clean-evening-442413-k4-docker-repository/whanos-python-python-project:latest
+  replicas: 1
+  resources: {}
+  ports: []

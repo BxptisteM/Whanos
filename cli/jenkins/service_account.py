@@ -65,7 +65,7 @@ def assign_container_registry_role():
         "--member",
         f"serviceAccount:{SERVICE_ACCOUNT_NAME}@{PROJECT_ID}.iam.gserviceaccount.com",
         "--role",
-        "roles/artifactregistry.reader"
+        "roles/artifactregistry.reader",
     ]
     print("Assigning Container Registry role...")
     subprocess.run(command, check=True)

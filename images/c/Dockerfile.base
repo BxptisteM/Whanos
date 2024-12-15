@@ -8,6 +8,6 @@ ONBUILD COPY . .
 
 ONBUILD RUN make
 
-ONBUILD RUN find . ! -name 'compiled-app' -type f -exec rm -f {} +
+ONBUILD RUN rm -rf *.o
 
 ONBUILD CMD [ "./compiled-app" ]

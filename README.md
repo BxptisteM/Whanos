@@ -41,54 +41,21 @@ This project leverages a robust DevOps stack:
 - **GoogleCloud Registry**: Docker image registry ![Docker Logo](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)
 - **Helm**: Kubernetes application deployment and updates ![Helm Logo](https://img.shields.io/badge/Helm-0F1689?logo=helm&logoColor=white)
 
----
-
-## 📂 Repository Structure
-
-```
-/images
-    -> /javascript
-    -> /c
-    -> /befunge
-    -> /java
-    -> /python
-/docs
-    -> /assets
-        -> /banner.png
-    -> TERRAFORM.md
-/k8s
-/jenkins
-    -> /jobs
-    -> /config
-/ansible
-    -> /roles
-    -> /playbooks
-    -> /inventory
-/terraform
-    -> /template
-        -> terraform.tfvars.j2
-    -> main.tf
-/scripts
-server_init.py
-.env.example
-.gitignore
-README.md
-```
 
 ---
 
 ## 🌟 How It Works
 
-1. **Python Script**:
-   - Kicks off the setup by checking SSH keys and prompting for the private key path.
-2. **Terraform**:
+1. **Setup your environment**:
+   - Create a .env file (following the .env.example file) and fill it up with the asked variables
+2. **Python Script**:
+   - Use the `werserk.py` python script to initialize and deploy your infrastructure (see --help for more details).
+3. **Terraform**:
    - Provisions the virtual machine for Jenkins and Kubernetes.
-3. **Ansible**:
+4. **Ansible**:
    - Configures the VM and ensures dependencies are installed.
-4. **Jenkins (JCasC)**:
+5. **Jenkins (JCasC)**:
    - Automates Jenkins configuration.
-5. **Kubespray**:
-   - Sets up the Kubernetes cluster.
 6. **CI/CD Pipeline**:
    - Jobs created with JobDSL containerize and deploy applications.
 7. **Helm**:
@@ -98,10 +65,7 @@ README.md
 
 ## 📖 Documentation
 
-For detailed setup instructions, refer to the [Documentation](docs/) folder. Key highlights:
-
-- **Terraform** setup: [TERRAFORM.md](docs/TERRAFORM.md)
-- How to configure `whanos.yml` for deployment.
+All the detailed developper documentation can be found in the [Documentation](/docs/) folde.
 
 ---
 
@@ -109,27 +73,15 @@ For detailed setup instructions, refer to the [Documentation](docs/) folder. Key
 
 ### Prerequisites
 
-- SSH keys for accessing the infrastructure.
-- Docker installed locally.
-- Kubernetes cluster configured via Kubespray.
+- SSH key-pair for accessing your infrastructure.
+- Python3, Pip, Ansible installed locally.
+- A valid GCP account.
+- A valid `whanos.yml` file see `whanos.template.yml` for more details.
 
 ### Commands
 
-- **Run Python script**: `python3 scripts/server_init.py`
+- **Run Python script**: `python3 scripts/werserk.py --[FLAG]`
 - **Deploy infrastructure**: Execute Terraform and Ansible steps outlined in `docs/TERRAFORM.md`.
-
----
-
-## 📅 Project Roadmap
-
-1. **MVP**:
-   - Full CI/CD pipeline and Kubernetes setup.
-2. **Advanced Features**:
-   - Add support for more languages (e.g., Go, Rust).
-   - Dynamic branch handling.
-   - Enhanced monitoring and logging.
-3. **Final Release**:
-   - Comprehensive documentation and user-friendly deployment.
 
 ---
 
@@ -144,4 +96,4 @@ We welcome contributions! Please check out the [Contributing Guide](CONTRIBUTING
 - [Baptiste Moreau](https://github.com/BxptisteM)
 - [Dragos Suceveanu](https://github.com/sdragos1)
 
---- 
+---

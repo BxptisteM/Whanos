@@ -26,7 +26,7 @@ freeStyleJob('link-project') {
                 def deployKey = "${DEPLOY_KEY}".trim()
                 def branchToBuild = "${BRANCH}".trim()
 
-                    
+
                 freeStyleJob("Projects/${projectName}") {
                     description("This job is used to link to the ${projectName} project")
 

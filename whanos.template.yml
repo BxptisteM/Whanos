@@ -1,0 +1,9 @@
+deployment:
+  replicas: 3
+  resources:
+    limits:
+      memory: ""
+    requests:
+      memory: ""
+  ports:
+    -

@@ -63,19 +63,3 @@ Ansible’s compatibility with Terraform, focus on automation, and scalability m
 Helm was selected for its Kubernetes-native approach, flexibility, and ability to manage versioned deployments efficiently, making it a robust solution for pod updates.
 
 ---
-
-## Terraform and Kubespray for Kubernetes Cluster Setup
-
-### Features:
-- **Terraform**:
-  - Provisions infrastructure flexibly across cloud, hybrid, or on-prem environments.
-  - Manages complex networking setups and ensures consistent deployments using modules and state files.
-
-- **Kubespray**:
-  - Highly configurable for specific Kubernetes needs, including networking plugins and control plane configurations.
-  - Customizable for monitoring, logging, and storage solutions tailored to project requirements.
-
-**Why Terraform and Kubespray were chosen:**
-This combination leverages Terraform’s flexibility for infrastructure provisioning and Kubespray’s fine-grained control for Kubernetes setup, delivering an optimal solution for cluster management.
-
----

@@ -22,3 +22,4 @@ In your Google Cloud Platform (GCP) project, the following APIs must be activate
 1. **Container API**: `container.googleapis.com`
 2. **Cloud Resource Manager API**: `cloudresourcemanager.googleapis.com`
 3. **Compute Engine API**: `compute.googleapis.com`
+4. **Artifact Registry API**: `artifactregistry.googleapis.com`

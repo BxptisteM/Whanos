@@ -25,6 +25,17 @@ Once your environment variables are configured, run the `werserk.py` script to d
 python3 werserk.py --all
 ```
 
+If you want to do it step by step you can check the available options by running:
+
+```bash
+python3 werserk.py --help
+```
+
+The only requirement is to build the master VM, the registry, and cluster before running the Jenkins pipeline.
+
+If not all the components are deployed, the Jenkins pipeline will not be able to deploy the application.
+
+
 ### 4. Create Deployment Configuration
 After the infrastructure is deployed, go to your project directory and create a `whanos.yml` file in the root of your project. This file will define the deployment configuration.
 

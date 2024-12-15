@@ -30,8 +30,22 @@ def build_standalone_image(ctx: Context, base_image_name: str) -> str:
 
 
 def build_base_image(ctx: Context, base_image_name: str) -> str:
-    print(f"Building base image for {ctx.language.name}...")
-    return "z"
+    print(f"Building standalone image for {ctx.project_name}...")
+    image_name = f"{base_image_name}-{ctx.project_name}"
+    print(f"Image name: {image_name}")
+    res = subprocess.run(
+        [
+            "docker",
+            "build",
+            "-t",
+            image_name,
+            ".",
+        ],
+        capture_output=True,
+        text=True,
+    )
+    print(res.stdout)
+    return image_name
 
 
 def tag_image(image_name: str, tag: str) -> None:

@@ -12,7 +12,7 @@ image:
   name: {ctx.project_name.replace("_", "-")}
   uri: {REGISTRY_URI}/{image_name}:latest
     """
-    with open("whanos.yml", "w") as file:
+    with open("whanos.yml", "a") as file:
         file.write(yaml_content)
 
 
@@ -36,6 +36,10 @@ def run_deployment(ctx: Context) -> None:
     namespace = ctx.project_name.replace("_", "-")
     default_val_file = CHART_FILEPATH + "/values.yaml"
     release_name = f"{namespace}-release"
+    with open(default_val_file, "r") as file:
+        print(f"Default values file contents: {file.read()}", flush=True)
+    with open("whanos.yml", "r") as file:
+        print(f"Whanos values file contents: {file.read()}", flush=True)
 
     if not check_if_deployment_exists(ctx):
         print("No existing release found. Performing first-time install...", flush=True)

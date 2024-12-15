@@ -44,46 +44,9 @@ This project leverages a robust DevOps stack:
 
 ---
 
-## 🌟 How It Works
+## 📖 Usage
 
-1. **Setup your environment**:
-   - Create a .env file (following the .env.example file) and fill it up with the asked variables
-2. **Python Script**:
-   - Use the `werserk.py` python script to initialize and deploy your infrastructure (see --help for more details).
-3. **Terraform**:
-   - Provisions the virtual machine for Jenkins and Kubernetes.
-4. **Ansible**:
-   - Configures the VM and ensures dependencies are installed.
-5. **Jenkins (JCasC)**:
-   - Automates Jenkins configuration.
-6. **CI/CD Pipeline**:
-   - Jobs created with JobDSL containerize and deploy applications.
-7. **Helm**:
-   - Updates Kubernetes pods with the latest Docker images.
-
----
-
-## 📖 Documentation
-
-All the detailed developper documentation can be found in the [Documentation](/docs/) folde.
-
----
-
-## 🚀 Deployment Guide
-
-### Prerequisites
-
-- SSH key-pair for accessing your infrastructure.
-- Python3, Pip, Ansible installed locally.
-- A valid GCP account.
-- A valid `whanos.yml` file see `whanos.template.yml` for more details.
-
-### Commands
-
-- **Run Python script**: `python3 scripts/werserk.py --[FLAG]`
-- **Deploy infrastructure**: Execute Terraform and Ansible steps outlined in `docs/TERRAFORM.md`.
-
----
+For detailed instructions on how to use this project, refer to the [Usage Guide](docs/USAGE.md).
 
 ## 🔗 Contributions
 

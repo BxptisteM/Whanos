@@ -10,3 +10,9 @@
   become: true
   roles:
     - jenkins
+
+- name: Install Helm
+  hosts: jenkins
+  become: true
+  roles:
+    - install_helm

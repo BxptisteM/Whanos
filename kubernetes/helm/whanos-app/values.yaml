@@ -1,0 +1,4 @@
+deployment:
+  replicas: 1
+  resources: {}
+  ports: []
